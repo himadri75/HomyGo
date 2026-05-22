@@ -8,21 +8,18 @@ const AuthPage = () => {
   const navigate = useNavigate();
   const { createUser, login, loading } = useContext(AppContext);
 
-  const [mode, setMode] = useState("login");
-
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [gender, setGender] = useState("");
-  const [dob, setDob] = useState("");
-
   const mode =
     state === "create"
       ? "signup"
       : state === "login"
         ? "login"
         : null;
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [gender, setGender] = useState("");
+  const [dob, setDob] = useState("");
 
   useEffect(() => {
     if (!mode) {
@@ -31,7 +28,6 @@ const AuthPage = () => {
   }, [mode, navigate]);
 
   const handleModeChange = (newMode) => {
-    setMode(newMode);
     navigate(newMode === "signup" ? "/auth/create" : "/auth/login");
   };
 
