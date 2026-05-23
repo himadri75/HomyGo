@@ -21,7 +21,7 @@ const Navbar = () => {
 
           {/* PNG Logo Image */}
           <img
-            src="/homygo.png"   // put your PNG inside public folder
+            src="/homygo.jpg"   // put your PNG inside public folder
             alt="Homygo Logo"
             className="w-10 h-10 object-contain"
           />
