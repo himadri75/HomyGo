@@ -19,19 +19,22 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center gap-3 cursor-pointer group">
 
-          {/* PNG Logo Image */}
-          <img
-            src="/homygo.jpg"   // put your PNG inside public folder
-            alt="Homygo Logo"
-            className="w-10 h-10 object-contain"
-          />
-
-          <Link
-            to="/"
-            className="text-xl font-bold text-blue-900 dark:text-white tracking-wide transition"
-          >
-            HomyGo
-          </Link>
+          {/* Logo Image */}
+          <NavLink to="/">
+            {darkmode ?
+              <img
+                src="/homygo_dark.png"
+                alt="Homygo Logo"
+                className="h-10 w-auto object-contain"
+              />
+              :
+              <img
+                src="/homygo_light.png"
+                alt="Homygo Logo"
+                className="h-10 w-auto object-contain"
+              />
+            }
+          </NavLink>
 
         </div>
 
@@ -62,7 +65,7 @@ const Navbar = () => {
               {/* Get Started */}
               <button
                 onClick={() => navigate("/auth/create")}
-                className="px-6 py-2 bg-blue-600 dark:bg-blue-500 text-white text-sm font-medium tracking-wide hover:bg-blue-700 dark:hover:bg-blue-400 transition flex items-center shadow-md hover:shadow-lg rounded-lg"
+                className="px-6 py-2 bg-blue-600 dark:bg-blue-500 text-white text-[12px] font-medium tracking-wide hover:bg-blue-700 dark:hover:bg-blue-400 transition flex items-center shadow-md hover:shadow-lg rounded-lg"
               >
                 Get Started
                 <ArrowRight className="w-4 h-4 ml-2" />

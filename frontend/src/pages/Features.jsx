@@ -55,7 +55,7 @@ const Features = () => {
         <div className="max-w-7xl mx-auto px-6">
 
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
-            Why Choose TourMate
+            Why Choose HomyGo
           </h1>
 
           <p className="text-blue-100 dark:text-gray-300 text-sm md:text-base max-w-3xl">
@@ -203,7 +203,7 @@ const Features = () => {
               </h2>
 
               <p className="text-blue-800 dark:text-gray-300 text-sm mb-8 leading-relaxed">
-                Join thousands of travelers who have discovered the real India through TourMate. Start your journey today and create unforgettable memories with local communities.
+                Join thousands of travelers who have discovered the real India through HomyGo. Start your journey today and create unforgettable memories with local communities.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

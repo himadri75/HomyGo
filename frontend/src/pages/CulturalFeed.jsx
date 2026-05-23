@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import CulturalFeedCard from '../components/CulturalFeedCard';
 
 const CulturalFeed = () => {
-  const { culturalFeeds, fetchCulturalFeeds, page } = useContext(AppContext);
+  const { culturalFeeds, fetchCulturalFeeds, page, loading, errorMessage } = useContext(AppContext);
   const [isfeedsavailable, setIsfeedsavailable] = useState(true);
 
   useEffect(() => {
@@ -16,16 +16,22 @@ const CulturalFeed = () => {
 
   const handleLoadMore = async () => {
     const isfeeds = await fetchCulturalFeeds(page);
-    console.log(isfeeds);
     setIsfeedsavailable(isfeeds);
   }
 
   if (!culturalFeeds || culturalFeeds.length === 0) {
     return (
       <div className="bg-blue-50 dark:bg-gray-950 min-h-screen flex items-center justify-center transition-colors duration-300">
-        <p className="text-blue-900 dark:text-gray-300 text-base animate-pulse">
-          Loading cultural feeds...
-        </p>
+        <div className="flex flex-col items-center gap-4">
+
+          {/* Loader */}
+          {loading.culturalFeedsFetching ? <div className="w-10 h-10 border-4 border-blue-200 dark:border-gray-700 border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin"></div> : ""}
+
+          <p className="text-blue-900 dark:text-gray-200 text-lg font-medium">
+            {loading.culturalFeedsFetching ? "Loading cultural feeds..." : errorMessage.culturalFeedsFetching}
+          </p>
+
+        </div>
       </div>
     );
   }

@@ -6,7 +6,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "Hello! 👋 I'm TourMate AI Assistant. How can I help you plan your journey today?",
+      text: "Hello! 👋 I'm HomyGo AI Assistant. How can I help you plan your journey today?",
       sender: 'bot',
       timestamp: new Date()
     }

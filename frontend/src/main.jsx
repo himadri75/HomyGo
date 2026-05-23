@@ -13,3 +13,5 @@ createRoot(document.getElementById("root")).render(
     </AppContextProvider>
   </BrowserRouter>
 );
+
+// npm run dev -- -host

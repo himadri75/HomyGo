@@ -44,7 +44,7 @@ const Features = () => {
             Why Choose{" "}
 
             <span className="text-blue-600 dark:text-blue-400">
-              TourMate
+              HomyGo
             </span>
 
           </h2>

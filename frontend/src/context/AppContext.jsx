@@ -24,8 +24,14 @@ const AppContextProvider = ({ children }) => {
     createAccount: false,
     login: false,
     bookingLoading: false,
-    emergencyDetailsLoading: false
+    emergencyDetailsLoading: false,
+    homestaysFetching: false,
+    culturalFeedsFetching: false
   })
+  const [errorMessage, setErrorMessage] = useState({
+    homestaysFetching: "",
+    culturalFeedsFetching: ""
+  });
 
   const toggleDarkmode = () => {
     setDarkmode(prev => !prev);
@@ -90,18 +96,19 @@ const AppContextProvider = ({ children }) => {
   const logout = async () => {
     try {
       const res = await axiosInstance.post("/api/v1/users/logout");
-      if (res.data?.success) {
+      if (res.data.success) {
         toast.success(res.data.message);
         navigate("/");
       }
 
-      toast.success("Logout failed.");
     } catch (error) {
+      toast.success("Logout failed.");
       console.error("Logout ERROR: ", error);
     }
   }
 
   const fetchHomestays = async () => {
+    setLoading(prev => ({ ...prev, homestaysFetching: true }));
     try {
       const response = await axiosInstance.get("/api/v1/homestays?limit=4");
       const data = response?.data;
@@ -119,6 +126,9 @@ const AppContextProvider = ({ children }) => {
 
     } catch (error) {
       console.error(error?.response?.data?.message || "Failed to fetch homestays.")
+      setErrorMessage(prev => ({ ...prev, homestaysFetching: error?.response?.data?.message || "Failed to load homestays." }));
+    } finally {
+      setLoading(prev => ({ ...prev, homestaysFetching: false }));
     }
   }
 
@@ -175,6 +185,7 @@ const AppContextProvider = ({ children }) => {
   }
 
   const fetchCulturalFeeds = async (page = 1, size = 9) => {
+    setLoading(prev => ({ ...prev, culturalFeedsFetching: true }));
     try {
       const response = await axiosInstance.get(`/api/v1/feeds?page=${page}&size=${size}`);
       const data = response?.data;
@@ -188,6 +199,9 @@ const AppContextProvider = ({ children }) => {
       console.error(
         error?.response?.data?.message || "Failed to fetch feeds."
       );
+      setErrorMessage(prev => ({ ...prev, culturalFeedsFetching: error?.response?.data?.message || "Failed to load feeds." }));
+    } finally {
+      setLoading(prev => ({ ...prev, culturalFeedsFetching: false }));
     }
 
     return true;
@@ -327,6 +341,7 @@ const AppContextProvider = ({ children }) => {
     page,
     wishlist,
     loading,
+    errorMessage,
     bookings,
     darkmode,
     toggleDarkmode,

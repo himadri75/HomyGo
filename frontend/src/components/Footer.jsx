@@ -11,7 +11,7 @@ const Footer = () => {
 
           {/* Brand */}
           <div>
-            <h2 className="text-2xl font-bold mb-4">TourMate</h2>
+            <h2 className="text-2xl font-bold mb-4">HomyGo</h2>
             <p className="text-blue-200 text-sm leading-relaxed mb-4">
               Discover authentic India through local homestays, cultural experiences, and smart travel planning.
             </p>
@@ -69,7 +69,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="https://example.com/sourik-das"
+                  href="https://www.linkedin.com/in/sourik-das/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white"
@@ -80,7 +80,7 @@ const Footer = () => {
 
               <li>
                 <a
-                  href="https://example.com/anish-kar"
+                  href="https://www.linkedin.com/in/anish-kar-b6764b259/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white"
@@ -118,7 +118,7 @@ const Footer = () => {
         {/* Divider */}
         <div className="border-t border-blue-800 pt-6 flex flex-col md:flex-row justify-between items-center text-sm text-blue-300">
 
-          <p>© {new Date().getFullYear()} TourMate. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} HomyGo. All rights reserved.</p>
 
           <div className="flex gap-6 mt-4 md:mt-0">
             <span className="hover:text-white cursor-pointer">Terms</span>

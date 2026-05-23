@@ -39,7 +39,7 @@ const Section = ({ title, data, category }) => {
 };
 
 const Homestays = () => {
-  const { fetchHomestays, homestays } = useContext(AppContext);
+  const { fetchHomestays, homestays, errorMessage, loading } = useContext(AppContext);
 
   useEffect(() => {
     if (!homestays) {
@@ -55,11 +55,11 @@ const Homestays = () => {
         <div className="flex flex-col items-center gap-4">
 
           {/* Loader */}
-          <div className="w-10 h-10 border-4 border-blue-200 dark:border-gray-700 border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin"></div>
+          {loading.homestaysFetching ? <div className="w-10 h-10 border-4 border-blue-200 dark:border-gray-700 border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin"></div> : ""}
 
           <p className="text-blue-900 dark:text-gray-200 text-lg font-medium">
 
-            Loading homestays...
+            {loading.homestaysFetching ? "Loading homestays..." : errorMessage.homestaysFetching}
 
           </p>
 

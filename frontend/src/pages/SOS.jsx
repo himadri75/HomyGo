@@ -139,7 +139,7 @@ const SOS = () => {
       category: 'Travel & Tourism Support',
       icon: <MapPin className="w-5 h-5" />,
       contacts: [
-        { name: 'TourMate Emergency Support', number: '+91-75850-46672', state: 'All India', available: '24/7' },
+        { name: 'HomyGo Emergency Support', number: '+91-75850-46672', state: 'All India', available: '24/7' },
         { name: 'Indian Ministry of Tourism', number: '1363', state: 'All India', available: '24/7' },
         { name: 'Foreigners Regional Registration', number: '1800-118-111', state: 'All India', available: '24/7' },
         { name: 'Embassy Assistance', number: '011-2419-8162', state: 'Delhi', available: '24/7' }
@@ -386,7 +386,7 @@ const SOS = () => {
 
               <div>
                 <p className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase mb-1">Emergency Chat</p>
-                <p className="text-sm md:text-base font-bold text-blue-900 dark:text-gray-100">Connect with TourMate</p>
+                <p className="text-sm md:text-base font-bold text-blue-900 dark:text-gray-100">Connect with HomyGo</p>
                 <p className="text-xs text-blue-800 dark:text-gray-400 mt-1">Immediate assistance</p>
               </div>
             </div>

@@ -4,7 +4,7 @@ const testimonials = [
   {
     name: "Sarah Johnson",
     location: "USA",
-    text: "TourMate helped me find an amazing homestay in Kerala. The experience felt truly authentic and personal.",
+    text: "HomyGo helped me find an amazing homestay in Kerala. The experience felt truly authentic and personal.",
   },
   {
     name: "Marco Rodriguez",
@@ -14,7 +14,7 @@ const testimonials = [
   {
     name: "Priya Patel",
     location: "India",
-    text: "As a host, TourMate brings travelers who genuinely respect and enjoy our culture.",
+    text: "As a host, HomyGo brings travelers who genuinely respect and enjoy our culture.",
   },
 ];
 
@@ -38,7 +38,7 @@ const Testimonials = () => {
 
           <p className="text-blue-800 dark:text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
 
-            Real experiences from people exploring India with TourMate.
+            Real experiences from people exploring India with HomyGo.
 
           </p>
 

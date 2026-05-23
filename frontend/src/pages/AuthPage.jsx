@@ -53,7 +53,7 @@ const AuthPage = () => {
         <div className="hidden md:flex flex-col justify-center p-10 bg-blue-600 dark:bg-blue-950 text-white">
 
           <h2 className="text-3xl font-bold mb-4">
-            TourMate
+            HomyGo
           </h2>
 
           <p className="text-blue-100 dark:text-blue-200">
