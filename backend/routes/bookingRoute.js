@@ -4,9 +4,9 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/", authMiddleware, createBooking);
+router.post("", authMiddleware, createBooking);
 
-router.get("/:userId", authMiddleware, getBookings);
+router.get("", authMiddleware, getBookings);
 
 router.patch("/:bookingId/cancel", cancelBooking);
 
