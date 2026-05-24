@@ -20,13 +20,13 @@ app.use(morgan("dev"));
 const allowedOrigins = ["http://localhost:3000", "https://homygo-tan.vercel.app", "https://homygo.apps24.tech"];
 app.use(
   cors({
-    origin:allowedOrigins,
+    origin: allowedOrigins,
     credentials: true,
   })
 );
 
 app.get("/health", (req, res) => {
-  res.json({
+  res.status(200).json({
     status: "UP",
     message: "Server is Running",
     port: PORT,

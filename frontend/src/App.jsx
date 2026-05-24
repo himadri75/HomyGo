@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import FloatingChatButton from "./components/FloatingChatButton";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
@@ -12,7 +12,7 @@ import ItineraryPage from "./pages/ItineraryPage";
 import TourPlanPage from "./pages/TourPlanPage";
 import TranslatorPage from "./pages/TranslatorPage";
 import Chatbot from "./pages/Chatbot";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useCallback } from "react";
 import { AppContext } from "./context/AppContext";
 import SimilarHomestays from "./pages/SimilarHomestays";
 import ScrollToTop from "./components/ScrollToTop";
@@ -40,6 +40,29 @@ const App = () => {
       localStorage.setItem('theme', 'light');
     }
   }, [darkmode]);
+
+  const checkServerStatus = useCallback(async () => {
+    const baseURL = import.meta.env.VITE_SERVER_URL;
+    const response = await fetch(`${baseURL}/health`);
+
+    if (!response.ok) {
+      throw new Error("Server not responding");
+    }
+
+    return response.json();
+  }, []);
+
+  const handleServerStatus = useCallback(() => {
+    toast.promise(checkServerStatus(), {
+      loading: "Checking server status...",
+      success: "Server is up and running",
+      error: "Server is currently down",
+    });
+  }, [checkServerStatus]);
+
+  useEffect(() => {
+    handleServerStatus();
+  }, [handleServerStatus]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -71,44 +94,9 @@ const App = () => {
       <Footer />
       <FloatingChatButton />
 
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster position="top-center" reverseOrder={false} />
     </div>
   );
 };
 
 export default App;
-
-
-// {
-//     "place_id": 250669378,
-//     "licence": "Data © OpenStreetMap contributors, ODbL 1.0. http://osm.org/copyright",
-//     "osm_type": "way",
-//     "osm_id": 1040426266,
-//     "lat": "22.6262690",
-//     "lon": "88.3931690",
-//     "class": "highway",
-//     "type": "residential",
-//     "place_rank": 26,
-//     "importance": 0.05340673762111845,
-//     "addresstype": "road",
-//     "name": "",
-//     "display_name": "Paikpara, Baranagar, Kolkata Metropolitan Area, Barrackpore, North 24 Parganas, West Bengal, 700077, India",
-//     "address": {
-//         "suburb": "Paikpara",
-//         "city": "Baranagar",
-//         "municipality": "Kolkata Metropolitan Area",
-//         "county": "Barrackpore",
-//         "state_district": "North 24 Parganas",
-//         "state": "West Bengal",
-//         "ISO3166-2-lvl4": "IN-WB",
-//         "postcode": "700077",
-//         "country": "India",
-//         "country_code": "in"
-//     },
-//     "boundingbox": [
-//         "22.6262690",
-//         "22.6279756",
-//         "88.3931690",
-//         "88.3944216"
-//     ]
-// }
