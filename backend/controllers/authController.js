@@ -95,8 +95,8 @@ const login = async (req, res) => {
     // Store token in cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.DEPLOY_ENV === "prod" ? true : false,
-      sameSite: process.env.DEPLOY_ENV === "prod" ? "none" : "lax",
+      secure: true,
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 

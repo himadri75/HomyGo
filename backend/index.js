@@ -15,9 +15,10 @@ const PORT = 7777;
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
+app.set("trust proxy", 1);
 
 // CORS
-const allowedOrigins = ["http://localhost:5173", "https://homygo-tan.vercel.app", "https://homygo.apps24.tech"];
+const allowedOrigins = ["http://localhost:5173", "https://homygo.apps24.tech"];
 app.use(
   cors({
     origin: allowedOrigins,
