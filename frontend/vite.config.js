@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     host: true, // important for external access (binds to 0.0.0.0)
-    port: 3000,
+    port: 5173,
     allowedHosts: ['api2.apps24.tech']
   }
 })

@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 
 // CORS
-const allowedOrigins = ["http://localhost:3000", "https://homygo-tan.vercel.app", "https://homygo.apps24.tech"];
+const allowedOrigins = ["http://localhost:5173", "https://homygo-tan.vercel.app", "https://homygo.apps24.tech"];
 app.use(
   cors({
     origin: allowedOrigins,

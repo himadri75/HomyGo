@@ -1,10 +1,38 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
+const fs = require('fs');
+const path = require('path');
+
+// Load CA certificate
+const caCert = fs.readFileSync(
+  path.resolve(__dirname, './ca.pem')
+);
 
 const pool = mysql.createPool({
-  host: process.env.DATABASE_HOST,
-  user: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT),
+
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+
+  ssl: {
+    ca: caCert,
+    rejectUnauthorized: true
+  }
 });
 
-module.exports = pool.promise();
+// Test connection
+(async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log('✅ MySQL connected successfully (Aiven - homygo)');
+    connection.release();
+  } catch (err) {
+    console.error('❌ MySQL connection failed:', err.message);
+  }
+})();
+
+module.exports = pool;

@@ -23,3 +23,9 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# MongoDB related files
+
+models/
+config/mongodb.js
+service/test.js
