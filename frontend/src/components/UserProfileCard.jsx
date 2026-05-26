@@ -194,22 +194,17 @@ const UserProfileCard = () => {
                 Emergency Contact Details
               </h3>
 
-              {/* Responsive Row */}
               <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-end">
 
                 {/* Emergency Email */}
                 <div className="flex-1">
-
-                  {/* Icon + Text */}
                   <div className="flex items-center gap-2 mb-1">
                     <Mail className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
-
                     <p className="text-xs text-yellow-700 dark:text-yellow-300 font-semibold uppercase tracking-wide">
                       Emergency Email
                     </p>
                   </div>
 
-                  {/* Input */}
                   <input
                     type="email"
                     value={emergencyEmail}
@@ -221,17 +216,13 @@ const UserProfileCard = () => {
 
                 {/* Emergency Phone */}
                 <div className="flex-1">
-
-                  {/* Icon + Text */}
                   <div className="flex items-center gap-2 mb-1">
                     <Phone className="w-4 h-4 text-yellow-600 dark:text-yellow-400" />
-
                     <p className="text-xs text-yellow-700 dark:text-yellow-300 font-semibold uppercase tracking-wide">
                       Emergency Phone
                     </p>
                   </div>
 
-                  {/* Input */}
                   <input
                     type="tel"
                     value={emergencyPhone}
@@ -241,46 +232,35 @@ const UserProfileCard = () => {
                   />
                 </div>
 
-                {/* Add Button */}
+                {/* Button */}
                 <button
                   onClick={handleEmergencyEmailAndPhoneUpdate}
                   disabled={loading.emergencyDetailsLoading}
                   className="w-full md:w-auto px-6 py-2.5 bg-yellow-500 hover:bg-yellow-600 text-white text-sm font-medium rounded-xl transition"
                 >
-                  {loading.emergencyDetailsLoading ? (
-                    <>
-                      <svg
-                        className="w-4 h-4 animate-spin text-white"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                        />
-                      </svg>
-                    </>
-                  ) : (
-                    "Add"
-                  )}
+                  {loading.emergencyDetailsLoading ? "Saving..." : "Add"}
                 </button>
 
               </div>
             </div>
           ) : (
-            <div className="bg-green-50 dark:bg-gray-800 border border-green-200 dark:border-gray-700 p-4 rounded-xl mb-5">
-              <p className="text-sm font-medium text-green-800 dark:text-amber-300">
-                SOS Emergency Contact is Active
-              </p>
+            <div className="bg-green-50 dark:bg-gray-800 border border-green-200 dark:border-gray-700 p-5 rounded-xl mb-5">
+
+              <h3 className="text-sm font-semibold text-green-700 dark:text-green-300 mb-3 uppercase tracking-wide">
+                SOS Emergency Contact Active
+              </h3>
+
+              <div className="text-sm space-y-2">
+                <p className="text-gray-700 dark:text-gray-300">
+                  <span className="font-semibold">Email:</span>{" "}
+                  {user.emergency_email || "Not set"}
+                </p>
+
+                <p className="text-gray-700 dark:text-gray-300">
+                  <span className="font-semibold">Phone:</span>{" "}
+                  {user.emergency_phone || "Not set"}
+                </p>
+              </div>
             </div>
           )}
 

@@ -285,9 +285,10 @@ const AppContextProvider = ({ children }) => {
 
   }
 
-  const getAllBookings = async () => {
+  const getAllBookings = async (status) => {
+    setBookings(null);
     try {
-      const response = await axiosInstance.get(`/api/v1/bookings`);
+      const response = await axiosInstance.get(`/api/v1/bookings?status=${status}`);
       const data = response?.data;
 
       if (response.status === 200) {

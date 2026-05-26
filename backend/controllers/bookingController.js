@@ -62,30 +62,42 @@ const createBooking = async (req, res) => {
 
 const getBookings = async (req, res) => {
   const { id: userId } = req.user;
+  const { status } = req.query;
 
   try {
-    const [result] = await db.query(
-      `SELECT
-          hb.id AS booking_id,
-          h.id, 
-          h.title, 
-          h.location, 
-          h.category,
-          JSON_EXTRACT(h.images, '$[0]') AS image,
-          hb.status, 
-          hb.start_date, 
-          hb.end_date
-        FROM homestays h
-        INNER JOIN homestay_booking hb ON h.id = hb.homestay_id
-        WHERE hb.user_id = ?
-        ORDER BY hb.start_date ASC;`,
-      [userId]
-    );
+    let query = `
+      SELECT
+        hb.id AS booking_id,
+        h.id, 
+        h.title, 
+        h.location, 
+        h.category,
+        JSON_EXTRACT(h.images, '$[0]') AS image,
+        hb.status, 
+        hb.start_date, 
+        hb.end_date
+      FROM homestays h
+      INNER JOIN homestay_booking hb ON h.id = hb.homestay_id
+      WHERE hb.user_id = ?
+    `;
+
+    const params = [userId];
+
+    if (status && status !== "ALL") {
+      query += ` AND hb.status = ?`;
+      params.push(status);
+    }
+
+    query += ` ORDER BY hb.start_date ASC`;
+
+    const [result] = await db.query(query, params);
 
     return res.status(200).json({
       success: true,
-      message: result.length ? "Bookings fetched successfully." : "No bookings found.",
-      bookings: result
+      message: result.length
+        ? "Bookings fetched successfully."
+        : "No bookings found.",
+      bookings: result,
     });
 
   } catch (error) {

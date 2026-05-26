@@ -120,7 +120,7 @@ const getUserDetails = async (req, res) => {
 
   try {
     const [result] = await db.query(
-      'SELECT id, name, email, gender, dob, is_sos_active, status, created_at FROM users WHERE id = ?;',
+      'SELECT id, name, email, gender, dob, is_sos_active, emergency_email, emergency_phone, status, created_at FROM users WHERE id = ?;',
       [id]
     );
 

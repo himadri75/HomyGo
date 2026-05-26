@@ -30,8 +30,10 @@ const SingleHomestay = () => {
 
   if (!singleHomestay) {
     return (
-      <div className="bg-blue-50 min-h-screen flex items-center justify-center">
-        <p className="text-blue-900 text-base">Loading homestay details...</p>
+      <div className="bg-blue-50 dark:bg-gray-900 min-h-screen flex items-center justify-center">
+        <p className="text-blue-900 dark:text-gray-200 text-base">
+          Loading homestay details...
+        </p>
       </div>
     );
   }

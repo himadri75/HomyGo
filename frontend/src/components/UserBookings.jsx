@@ -10,9 +10,9 @@ const UserBookings = () => {
 
   useEffect(() => {
     if (user) {
-      getAllBookings(user.id);
+      getAllBookings("ALL");
     }
-  }, [user?.id]);
+  }, [user]);
 
   if (!bookings) {
     return;

@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { AppContext } from '../context/AppContext';
 import { NavLink } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const SOS = () => {
   const [sosTriggered, setSosTriggered] = useState(false);
@@ -51,6 +52,10 @@ const SOS = () => {
   };
 
   const handleSOS = async () => {
+    if (!user.is_sos_active) {
+      toast.error("Please add emergency details before SOS call.");
+      return;
+    }
     if (loading) return;
 
     setLoading(true);

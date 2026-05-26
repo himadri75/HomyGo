@@ -1,10 +1,6 @@
 // backend/service/mailService.js
-// HomyGo banner link = https://homygo.apps24.tech/homygo_banner.jpg
-
 const resend = require("../config/mail");
-
-const EMAIL_BANNER =
-  "https://homygo.apps24.tech/homygo_banner.jpg";
+const EMAIL_BANNER = "https://homygo.apps24.tech/homygo_banner.jpg";
 
 const getBanner = () => `
   <div style="margin-bottom: 20px;">
@@ -21,6 +17,14 @@ const getBanner = () => `
     />
   </div>
 `;
+
+const getISTTime = () => {
+  const datetime = new Date().toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+  });
+
+  return datetime;
+}
 
 const sendAccountCreatedMail = async (name, email, gender, dob, req) => {
   try {
@@ -65,7 +69,7 @@ const sendAccountCreatedMail = async (name, email, gender, dob, req) => {
 
             <tr>
               <td style="padding: 6px 10px;"><strong>Created At:</strong></td>
-              <td>${new Date().toLocaleString()}</td>
+              <td>${getISTTime()}</td>
             </tr>
           </table>
 
@@ -126,7 +130,7 @@ const sendLoginSuccessMail = async (user, req) => {
 
             <tr>
               <td style="padding: 6px 10px;"><strong>Time:</strong></td>
-              <td>${new Date().toLocaleString()}</td>
+              <td>${getISTTime}</td>
             </tr>
 
             <tr>
@@ -235,7 +239,7 @@ const sendEmergencySOSMail = async (
 
             <tr>
               <td style="padding: 8px;"><strong>Triggered At:</strong></td>
-              <td>${new Date().toLocaleString()}</td>
+              <td>${getISTTime()}</td>
             </tr>
 
           </table>

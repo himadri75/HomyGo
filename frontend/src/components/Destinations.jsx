@@ -1,21 +1,24 @@
 import { ArrowRight } from "lucide-react";
 import { assets } from "../assets/asset";
-
+import { NavLink } from "react-router-dom"
 const destinations = [
   {
     name: "Rajasthan",
     desc: "Royal palaces, desert safaris, and heritage stays.",
-    img: assets.rajasthan_desart
+    img: assets.rajasthan_desart,
+    redirectURL: "/homestays/deserts",
   },
   {
     name: "Kerala",
     desc: "Backwaters, beaches, and peaceful village life.",
-    img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800"
+    img: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?w=800",
+    redirectURL: "/homestays/beaches",
   },
   {
     name: "Himachal Pradesh",
     desc: "Mountains, adventure, and scenic retreats.",
-    img: assets.himachal_mountain
+    img: assets.himachal_mountain,
+    redirectURL: "/homestays/mountains",
   }
 ];
 
@@ -81,13 +84,12 @@ const Destinations = () => {
                 </p>
 
                 {/* CTA */}
-                <button className="flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-800 dark:hover:text-blue-300 transition">
-
+                <NavLink
+                  to={place.redirectURL}
+                  className="flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-800 dark:hover:text-blue-300 transition">
                   Explore
-
                   <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition" />
-
-                </button>
+                </NavLink>
 
               </div>
 

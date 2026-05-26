@@ -32,7 +32,7 @@ const addUserLocation = async (req, res) => {
       [userId, lat, lon, address || null, source]
     );
 
-    await sendEmergencySOSMail(user.emergency_email, user, { latitude: lat, longitude: lon, address, source }, req);
+    sendEmergencySOSMail(user.emergency_email, user, { latitude: lat, longitude: lon, address, source }, req).catch((error) => console.error("SOS mail error", error));
 
     res.status(201).json({
       success: true,
