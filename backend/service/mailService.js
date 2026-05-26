@@ -130,7 +130,7 @@ const sendLoginSuccessMail = async (user, req) => {
 
             <tr>
               <td style="padding: 6px 10px;"><strong>Time:</strong></td>
-              <td>${getISTTime}</td>
+              <td>${getISTTime()}</td>
             </tr>
 
             <tr>
