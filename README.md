@@ -359,7 +359,7 @@ Our talented team of developers and designers working together to build HomyGo:
       <h3>Arka Roy</h3>
       <em>AI Integration Developer</em><br/>
       <a href="https://www.linkedin.com/in/arka-roy-76b1561b2/">LinkedIn</a> | 
-      <a href="https://github.com/amit-patel">GitHub</a>
+      <a href="https://github.com/arka-coder">GitHub</a>
     </td>
     <td align="center" width="20%">
       <h3>Anish Kar</h3>
