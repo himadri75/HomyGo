@@ -96,7 +96,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="hover:text-white"
                 >
-                  Arka Boy ↗
+                  Arka Roy ↗
                 </a>
               </li>
 

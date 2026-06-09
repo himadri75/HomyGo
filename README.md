@@ -1,160 +1,387 @@
-# HomyGo – India’s Travel & Homestay Platform
+# 🌍 HomyGo - Your Personal Travel Companion
 
-## Overview
+<div align="center">
 
-**HomyGo** is a modern travel and homestay platform built to help travelers explore, plan, and book unique stays across India. The platform combines accommodation booking, AI-powered travel assistance, cultural discovery, multilingual communication tools, and traveler safety features into one seamless experience.
+<table>
+  <tr>
+    <td>
+      <img src="https://homygo.apps24.tech/homygo_dark.png" alt="HomyGo Logo" width="150"/>
+    </td>
+    <td>
+      <em>Discover. Connect. Experience.</em>
+    </td>
+  </tr>
+</table>
 
-Whether users are searching for mountain retreats, riverside cottages, snowy escapes, or culturally rich destinations, HomyGo acts as an all-in-one travel companion for discovering India.
+**An innovative platform connecting travelers with authentic homestay experiences and cultural immersion.**
 
----
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![Express.js](https://img.shields.io/badge/Express.js-v5-000000?logo=express&logoColor=white)](https://expressjs.com/)
+[![MySQL](https://img.shields.io/badge/MySQL-Database-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![Gemini AI](https://img.shields.io/badge/Google-Gemini_AI-4285F4?logo=google&logoColor=white)](https://ai.google.dev/)
+[![Resend](https://img.shields.io/badge/Email-Resend-000000?logo=resend&logoColor=white)](https://resend.com/)
+[![JWT](https://img.shields.io/badge/JWT-Authentication-000000?logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
-# ✨ Features
-
-## 🏡 Accommodation Browsing & Booking
-
-Discover and book unique homestays and travel accommodations across India.
-
-### Key Capabilities
-
-- Browse stays by region and travel style
-- Explore mountain stays, snowy destinations, riverside cottages, and more
-- View detailed property listings with:
-  - Pricing
-  - Ratings & reviews
-  - Amenities and features
-- Save favorite properties to a personalized wishlist
-- Manage bookings and reservations from the user dashboard
-
----
-
-## 📍 Smart Travel Planning
-
-Plan personalized trips with intelligent travel tools.
-
-### Features
-
-- Create custom tour plans based on destinations
-- Build multi-location travel itineraries
-- GPS-based location detection for nearby recommendations
-- Route suggestions and travel directions
-- Easy destination organization for seamless trip management
+</div>
 
 ---
 
-## 🤖 AI Travel Assistant
+## 📋 Overview
 
-HomyGo includes an AI-powered chatbot designed to assist travelers throughout their journey.
-
-### What It Can Do
-
-- Answer travel-related questions
-- Recommend destinations and stays
-- Provide itinerary suggestions
-- Share local travel information and guidance
-- Assist users in real-time while using the platform
+**HomyGo** is a full-stack web application that revolutionizes travel planning and homestay booking. By connecting travelers with local hosts, HomyGo enables authentic cultural experiences, AI-powered itinerary planning, real-time communication, and personalized travel recommendations. Built with modern web technologies, the platform provides a seamless and immersive travel discovery experience.
 
 ---
 
-## 🗣️ Multi-Language Translator
+## 🌟 Features
 
-Break language barriers while traveling across India.
+### Homestay Management
 
-### Supported Languages
+- **Browse Homestays** - Explore verified accommodations with detailed listings and images
+- **Advanced Search** - Filter by location, price, amenities, and ratings
+- **Wish List** - Save favorite homestays for future reference
+- **Ratings & Reviews** - Community-driven feedback system
 
-- English
-- Hindi
-- Bengali
-- Tamil
-- Telugu
-- Marathi
-- Gujarati
-- Kannada
-- Malayalam
-- Punjabi
+### Booking & Reservations
 
-### Additional Features
+- **Secure Booking System** - Easy reservation process with confirmation
+- **Booking History** - Track all past and upcoming bookings
+- **Status Tracking** - Real-time updates on booking status
+- **Flexible Cancellation** - Customer-friendly cancellation policies
 
-- Speech-to-text recognition
-- Quick phrase saving for frequent communication
-- Helpful for travelers visiting diverse regions of India
+### Cultural Experiences
 
----
+- **Cultural Feed** - Discover local experiences and cultural activities
+- **Interactive Feed** - Like, comment, and share cultural insights
+- **Authentic Encounters** - Connect with local communities
 
-## 🎭 Cultural Discovery
+### AI-Powered Features
 
-Explore India’s rich traditions and heritage through the Cultural Feed.
+- **Smart Chatbot** - 24/7 travel assistance powered by Gemini AI
+- **Language Translation** - Real-time translator for 100+ languages
+- **Itinerary Planning** - AI-generated personalized travel plans
+- **Route Optimization** - Smart geolocation-based recommendations
 
-### Discover
+### Communication & Safety
 
-- Festivals and celebrations
-- Traditional customs and lifestyles
-- Historical architecture
-- Heritage sites
-- Stories and experiences from different regions of India
+- **Real-time Chat** - Direct messaging between travelers and hosts
+- **SOS Feature** - Emergency assistance with quick alerts
+- **User Verification** - Secure authentication with Google OAuth
+- **Notifications** - Stay updated with real-time alerts
 
----
+### User Experience
 
-## 🆘 Safety Features
-
-Traveler safety is integrated directly into the platform.
-
-### Emergency Features
-
-- SOS emergency button with GPS location tracking
-- Sends distress alerts and emergency emails
-- Emergency contact management
-- Access to important safety resources and support information
+- **Google Authentication** - Quick and secure sign-up/login
+- **Responsive Design** - Optimized for mobile and desktop
+- **User Profiles** - Customizable profiles with travel preferences
+- **Theme Toggle** - Dark and light mode support
+- **Geolocation Services** - Location-based homestay discovery
 
 ---
 
-## 👤 User Accounts & Personalization
+## 🎯 Use Cases
 
-Personalized user experiences for seamless travel management.
-
-### Features
-
-- Secure authentication system
-- User profile management
-- Personalized recommendations
-- Booking history and saved preferences
-- Dark mode support for improved viewing experience
+- **Solo Travelers** - Find authentic experiences and connect with local hosts
+- **Cultural Enthusiasts** - Discover and participate in local cultural activities
+- **Travel Planning** - Get AI-powered itinerary suggestions
+- **Group Travel** - Coordinate bookings and experiences for teams
+- **Budget Travelers** - Find affordable homestays and local experiences
+- **Digital Nomads** - Extended stays with community connections
 
 ---
 
-# 🌍 Why HomyGo?
+## 🛠 Tech Stack
 
-HomyGo is more than just a booking platform — it is a complete travel ecosystem designed specifically for India.
+### Frontend
 
-By combining:
+| Technology       | Purpose                                      |
+| ---------------- | -------------------------------------------- |
+| **React 19**     | Modern UI library with hooks and composition |
+| **Vite**         | Lightning-fast build tool and dev server     |
+| **Tailwind CSS** | Utility-first CSS for responsive design      |
+| **Axios**        | HTTP client for API communication            |
+| **Context API**  | State management and data sharing            |
+| **React Router** | Client-side routing and navigation           |
+| **Gemini API**   | AI integration for chatbot & translation     |
 
-- Homestay booking
-- AI-powered travel assistance
-- Cultural exploration
-- Language accessibility
-- Safety-focused tools
+### Backend
 
-HomyGo creates a smarter, safer, and more immersive travel experience for users exploring India.
-
----
-
-# 🚀 Vision
-
-To make travel across India more accessible, personalized, culturally connected, and safe through modern technology and intelligent travel experiences.
-
----
-
-# 📌 Core Highlights
-
-- 🏡 Unique Homestay Experiences
-- 🤖 AI-Powered Travel Assistance
-- 🗺️ Smart Itinerary Planning
-- 🗣️ Multi-Language Communication
-- 🎭 Cultural Exploration
-- 🆘 Integrated Safety Tools
-- 🌙 User-Friendly Modern Interface
+| Technology           | Purpose                               |
+| -------------------- | ------------------------------------- |
+| **Node.js**          | JavaScript runtime for server         |
+| **Express.js**       | Web application framework             |
+| **MySQL**            | SQL database for data persistence     |
+| **Nodemailer**       | Resend email service for notifications|
+| **Gemini SDK**       | AI model integration                  |
+| **Geolocation APIs** | Location-based services               |
+| **Docker**           | User for containerized services       |
 
 ---
 
-# 📖 Conclusion
+## 🏗 Architecture
 
-HomyGo serves as a complete digital travel companion for travelers exploring India. From discovering hidden destinations and booking stays to receiving AI assistance and staying safe during journeys, the platform is designed to simplify and enrich every part of the travel experience.
+```
+┌────────────────────────────────────────────────────────────┐
+│                      Frontend (React)                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │  Components  │  │  Pages       │  │  Services    │      │
+│  │  (UI Layer)  │  │  (Routes)    │  │  (API/AI)    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│        │                  │                   │            │
+│        └──────────────────┼───────────────────┘            │
+│                           │ HTTP/WebSocket                 │
+└────────────────────────────────────────────────────────────┘
+                            │
+┌────────────────────────────────────────────────────────────┐
+│                     Backend (Node.js)                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   Routes     │  │ Controllers  │  │  Middleware  │      │
+│  │  (REST API)  │  │  (Logic)     │  │  (Auth/CORS) │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+│        │                  │                   │            │
+│        └──────────────────┼───────────────────┘            │
+│                           │                                │
+│  ┌──────────────────────────────────────────────────────┐  │
+│  │  Models (User, Homestay, Booking, CulturalFeed)      │  │
+│  └──────────────────────────────────────────────────────┘  │
+│                           │                                │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
+│  │   MySQL      │  │  Gemini AI   │  │   Mailer     │      │
+│  │   Database   │  │  (Chat/Trans)│  │  (Emails)    │      │
+│  └──────────────┘  └──────────────┘  └──────────────┘      │
+└────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- **Node.js** (v14 or higher)
+- **npm**
+- **MySQL** (local or Docker instance - MySQL 12)
+- **Gemini API Key** (from Google AI Platform)
+
+### Installation
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/himadri75/HomyGo.git
+   cd HomyGo
+   ```
+
+2. **Setup Backend**
+
+   ```bash
+   cd backend
+   npm install
+   ```
+
+   Create a `.env` file in the `backend` directory:
+
+   ```bash
+   # Backend/.env
+   RESEND_API_KEY=your_resend_mail_sender_api_key
+   JWT_SECRET=a_secret_text
+   NODE_ENV=development
+   DB_HOST=your_mysql_host
+   DB_USER=your_mysql_username
+   DB_PASSWORD=your_Mysql_password
+   DB_NAME=your_database_name
+   DB_PORT=databse_port
+   ```
+
+3. **Setup Frontend**
+
+   ```bash
+   cd ../frontend
+   npm install
+   ```
+
+   Create a `.env` file in the `frontend` directory:
+
+   ```bash
+   # Frontend/.env
+   VITE_SERVER_URL=http://localhost:7777
+   VITE_GEMINI_API_KEY=your_gemini_api_key
+   ```
+
+### Running the Application
+
+1. **Start Docker MySQL** (if running locally) OR **Add Cloud Database**
+
+2. **Start the Backend Server**
+
+   ```bash
+   cd backend
+   npm start
+   ```
+
+   Server will run on `http://localhost:7777`
+
+3. **Start the Frontend Development Server**
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+   Application will open on `http://localhost:5173`
+
+---
+
+## 📁 Project Structure
+
+```
+HomyGo/
+├── backend/
+│   ├── config/              # Configuration files (DB, Mail, MongoDB)
+│   ├── controllers/         # Route handlers (Auth, Booking, Feed, etc.)
+│   ├── middleware/          # Authentication and CORS middleware
+│   ├── routes/              # API route definitions
+│   ├── service/             # Business logic and services
+│   ├── index.js             # Server entry point
+│   └── package.json         # Backend dependencies
+│
+└── frontend/
+    ├── src/
+    │   ├── components/      # Reusable React components
+    │   ├── pages/           # Page components (routes)
+    │   ├── services/        # API calls and AI services (Gemini)
+    │   ├── config/          # Axios and other configurations
+    │   ├── context/         # React Context for state management
+    │   ├── assets/          # Images, static data
+    │   ├── App.jsx          # Main app component
+    │   └── main.jsx         # Entry point
+    ├── public/              # Static files
+    ├── package.json         # Frontend dependencies
+    ├── vite.config.js       # Vite configuration
+    └── tailwind.config.js   # Tailwind CSS configuration
+```
+
+---
+
+## 🔌 API Endpoints
+
+### Authentication
+
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/logout` - User logout
+
+### Homestays
+
+- `GET /api/homestay` - Get all homestays
+- `GET /api/homestay/:id` - Get single homestay
+- `POST /api/homestay` - Create new homestay (Host only)
+- `PUT /api/homestay/:id` - Update homestay
+- `DELETE /api/homestay/:id` - Delete homestay
+
+### Bookings
+
+- `GET /api/booking` - Get user bookings
+- `POST /api/booking` - Create new booking
+- `PUT /api/booking/:id` - Update booking status
+- `DELETE /api/booking/:id` - Cancel booking
+
+### Cultural Feed
+
+- `GET /api/feed` - Get all cultural posts
+- `POST /api/feed` - Create new post
+- `PUT /api/feed/:id` - Update post
+- `DELETE /api/feed/:id` - Delete post
+
+### AI Features
+
+- `POST /api/ai/chat` - Chatbot assistance
+- `POST /api/ai/translate` - Language translation
+- `POST /api/ai/itinerary` - Generate travel itinerary
+
+---
+
+## 🔐 Security Features
+
+- **JWT Authentication** - Secure token-based authentication
+- **Password Hashing** - Bcrypt for password encryption
+- **CORS Protection** - Cross-origin request handling
+- **Input Validation** - Server-side request validation
+- **MySQL Injection Prevention** - Query sanitization
+- **Environment Variables** - Sensitive data protection
+
+---
+
+## 🚀 Future Enhancements
+
+- [ ] Payment gateway integration (Stripe/Razorpay)
+- [ ] Video call feature between travelers and hosts
+- [ ] Advanced analytics dashboard
+- [ ] Mobile app (React Native)
+- [ ] Multi-language support
+- [ ] Recommendation engine
+- [ ] Virtual tours for homestays
+- [ ] Travel insurance integration
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 👨‍💻 Team Profile
+
+Our talented team of developers and designers working together to build HomyGo:
+
+<table>
+  <tr>
+    <td align="center" width="20%">
+      <h3>Himadri Karan</h3>
+      <em>Lead Backend Developer</em><br/>
+      <a href="https://www.linkedin.com/in/himadri516/">LinkedIn</a> | 
+      <a href="https://github.com/rajesh-kumar">GitHub</a>
+    </td>
+    <td align="center" width="20%">
+      <h3>Sourik Das</h3>
+      <em>Frontend Lead</em><br/>
+      <a href="https://www.linkedin.com/in/sourik-das/">LinkedIn</a> | 
+      <a href="https://github.com/priya-sharma">GitHub</a>
+    </td>
+    <td align="center" width="20%">
+      <h3>Arka Roy</h3>
+      <em>AI Integration Developer</em><br/>
+      <a href="https://www.linkedin.com/in/arka-roy-76b1561b2/">LinkedIn</a> | 
+      <a href="https://github.com/amit-patel">GitHub</a>
+    </td>
+    <td align="center" width="20%">
+      <h3>Anish Kar</h3>
+      <em>Client Communication Engineer</em><br/>
+      <a href="https://www.linkedin.com/in/anish-kar-b6764b259/">LinkedIn</a> | 
+      <a href="https://dribbble.com/sneha-gupta">Dribbble</a>
+    </td>
+    <td align="center" width="20%">
+      <h3>Arpan Santra</h3>
+      <em>Data Engineer</em><br/>
+      <a href="https://www.linkedin.com/in/arpansantra/">LinkedIn</a> | 
+      <a href="https://github.com/vikram-singh">GitHub</a>
+    </td>
+  </tr>
+</table>
+
+---
+
+<div align="center">
+
+**Made with ❤️ and lots of ☕**
+
+If you found this project helpful, please give it a ⭐️!
+
+</div>
