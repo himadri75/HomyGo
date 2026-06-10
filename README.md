@@ -371,7 +371,7 @@ Our talented team of developers and designers working together to build HomyGo:
       <h3>Arpan Santra</h3>
       <em>Data Engineer</em><br/>
       <a href="https://www.linkedin.com/in/arpansantra/">LinkedIn</a> | 
-      <a href="https://github.com/vikram-singh">GitHub</a>
+      <a href="https://github.com/itsarpansantra">GitHub</a>
     </td>
   </tr>
 </table>
