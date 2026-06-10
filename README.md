@@ -1,4 +1,4 @@
-# 🌍 HomyGo - Your Personal Travel Companion
+# HomyGo - Your Personal Travel Companion
 
 <div align="center">
 
@@ -106,15 +106,15 @@
 
 ### Backend
 
-| Technology           | Purpose                               |
-| -------------------- | ------------------------------------- |
-| **Node.js**          | JavaScript runtime for server         |
-| **Express.js**       | Web application framework             |
-| **MySQL**            | SQL database for data persistence     |
-| **Nodemailer**       | Resend email service for notifications|
-| **Gemini SDK**       | AI model integration                  |
-| **Geolocation APIs** | Location-based services               |
-| **Docker**           | User for containerized services       |
+| Technology           | Purpose                                |
+| -------------------- | -------------------------------------- |
+| **Node.js**          | JavaScript runtime for server          |
+| **Express.js**       | Web application framework              |
+| **MySQL**            | SQL database for data persistence      |
+| **Nodemailer**       | Resend email service for notifications |
+| **Gemini SDK**       | AI model integration                   |
+| **Geolocation APIs** | Location-based services                |
+| **Docker**           | User for containerized services        |
 
 ---
 
@@ -347,13 +347,13 @@ Our talented team of developers and designers working together to build HomyGo:
       <h3>Himadri Karan</h3>
       <em>Lead Backend Developer</em><br/>
       <a href="https://www.linkedin.com/in/himadri516/">LinkedIn</a> | 
-      <a href="https://github.com/rajesh-kumar">GitHub</a>
+      <a href="https://github.com/himadri75">GitHub</a>
     </td>
     <td align="center" width="20%">
       <h3>Sourik Das</h3>
       <em>Frontend Lead</em><br/>
       <a href="https://www.linkedin.com/in/sourik-das/">LinkedIn</a> | 
-      <a href="https://github.com/priya-sharma">GitHub</a>
+      <a href="https://github.com/sd-coder07">GitHub</a>
     </td>
     <td align="center" width="20%">
       <h3>Arka Roy</h3>
@@ -365,7 +365,7 @@ Our talented team of developers and designers working together to build HomyGo:
       <h3>Anish Kar</h3>
       <em>Client Communication Engineer</em><br/>
       <a href="https://www.linkedin.com/in/anish-kar-b6764b259/">LinkedIn</a> | 
-      <a href="https://dribbble.com/sneha-gupta">Dribbble</a>
+      <a href="https://github.com/AnishCoding2004">GitHub</a>
     </td>
     <td align="center" width="20%">
       <h3>Arpan Santra</h3>
