@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import axiosInstance from "./config/axiosInstance";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -42,27 +43,20 @@ const App = () => {
   }, [darkmode]);
 
   const checkServerStatus = useCallback(async () => {
-    const baseURL = import.meta.env.VITE_SERVER_URL;
-    const response = await fetch(`${baseURL}/health`);
-
-    if (!response.ok) {
-      throw new Error("Server not responding");
+    try {
+      await axiosInstance.get("/health");
+    } catch (error) {
+      toast.error("⚠️ Server is currently down. Some features may not work.");
     }
-
-    return response.json();
   }, []);
 
-  const handleServerStatus = useCallback(() => {
-    toast.promise(checkServerStatus(), {
-      loading: "Checking server status...",
-      success: "Server is up and running",
-      error: "Server is currently down",
-    });
-  }, [checkServerStatus]);
-
   useEffect(() => {
-    handleServerStatus();
-  }, [handleServerStatus]);
+    // Small delay to avoid false-positives during initial page load
+    const timer = setTimeout(() => {
+      checkServerStatus();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [checkServerStatus]);
 
   return (
     <div className="flex flex-col min-h-screen">

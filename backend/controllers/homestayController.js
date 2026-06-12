@@ -111,4 +111,49 @@ const getSingleHomestayByCategoryAndId = async (req, res) => {
   }
 };
 
-module.exports = { getHomestays, getHomestaysByCategory, getSingleHomestayByCategoryAndId };
+const searchHomestays = async (req, res) => {
+  const { q } = req.query;
+  const limit = Math.min(Math.max(1, Number(req.query.limit) || 50), 100);
+
+  if (!q || q.trim().length < 2) {
+    return res.status(400).json({
+      success: false,
+      message: "Search query must be at least 2 characters."
+    });
+  }
+
+  const keyword = `%${q.trim()}%`;
+
+  try {
+    const [result] = await db.query(
+      `SELECT id, title, location, category,
+              base_price AS price, rating,
+              JSON_EXTRACT(images, '$[0]') AS image,
+              features
+       FROM homestays
+       WHERE location LIKE ? OR title LIKE ?
+       ORDER BY rating DESC
+       LIMIT ?`,
+      [keyword, keyword, limit]
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: result.length
+        ? `Found ${result.length} homestay(s) matching "${q.trim()}".`
+        : `No homestays found matching "${q.trim()}".`,
+      query: q.trim(),
+      count: result.length,
+      homestays: result
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error."
+    });
+  }
+};
+
+module.exports = { getHomestays, getHomestaysByCategory, getSingleHomestayByCategoryAndId, searchHomestays };
