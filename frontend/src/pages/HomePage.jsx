@@ -5,7 +5,7 @@ import Features from "../components/Features"
 
 const HomePage = () => {
   return (
-    <div>
+    <div className="homygo-home overflow-hidden">
       <HeroSection />
       <Features />
       <Destinations />

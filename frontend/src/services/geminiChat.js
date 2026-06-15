@@ -1,8 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({
-  apiKey: import.meta.env.VITE_GEMINI_API_KEY,
-});
+const getGeminiClient = () => {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+  if (!apiKey) {
+    return null;
+  }
+
+  return new GoogleGenAI({
+    apiKey,
+  });
+};
 
 // System context for better AI responses
 const SYSTEM_CONTEXT = `You are HomyGo AI Assistant, a helpful travel companion for Indian tourism and homestay bookings.
@@ -68,6 +76,12 @@ USER CONTEXT:
 // Send message and get response
 export const sendChatMessage = async (userMessage) => {
   try {
+    const ai = getGeminiClient();
+
+    if (!ai) {
+      throw new Error("Gemini chat is not configured.");
+    }
+
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: [

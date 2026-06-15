@@ -16,7 +16,7 @@ export const dummyPlaces = {
       name: "Victoria Memorial",
       distance: 3.2,
       rating: 4.7,
-      img: "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800"
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Victoria_Memorial_situated_in_Kolkata.jpg/960px-Victoria_Memorial_situated_in_Kolkata.jpg"
     },
 
     {
@@ -24,7 +24,7 @@ export const dummyPlaces = {
       name: "Howrah Bridge",
       distance: 5.1,
       rating: 4.5,
-      img: "https://images.unsplash.com/photo-1536421469767-80559bb6f5e1?w=800"
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Howrah_bridge_at_night.jpg/960px-Howrah_bridge_at_night.jpg"
     },
 
     {
@@ -32,7 +32,7 @@ export const dummyPlaces = {
       name: "Dakshineswar Temple",
       distance: 8.5,
       rating: 4.8,
-      img: "https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800"
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Dakhineshwar_Temple_beside_the_Hoogly%2C_West_Bengal.JPG/960px-Dakhineshwar_Temple_beside_the_Hoogly%2C_West_Bengal.JPG"
     },
 
     {
@@ -40,7 +40,7 @@ export const dummyPlaces = {
       name: "Indian Museum",
       distance: 2.8,
       rating: 4.3,
-      img: "https://plus.unsplash.com/premium_photo-1697729447666-c39f50d595ea?w=800"
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Indian_Museum%2C_Courtyard%2C_Kolkata%2C_India.jpg/960px-Indian_Museum%2C_Courtyard%2C_Kolkata%2C_India.jpg"
     }
   ],
 
@@ -50,7 +50,7 @@ export const dummyPlaces = {
       name: "Red Fort",
       distance: 4.1,
       rating: 4.6,
-      img: "https://plus.unsplash.com/premium_photo-1661919589683-f11880119fb7?w=800"
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Delhi_fort.jpg/960px-Delhi_fort.jpg"
     },
 
     {
@@ -58,7 +58,7 @@ export const dummyPlaces = {
       name: "India Gate",
       distance: 3.4,
       rating: 4.5,
-      img: "https://plus.unsplash.com/premium_photo-1697730429201-381b71f61427?w=800"
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/India_Gate_%28All_India_War_Memorial%29.jpg/960px-India_Gate_%28All_India_War_Memorial%29.jpg"
     },
 
     {
@@ -66,7 +66,7 @@ export const dummyPlaces = {
       name: "Qutub Minar",
       distance: 9.2,
       rating: 4.7,
-      img: "https://images.unsplash.com/photo-1667849521212-e9843b89f322?w=800"
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Qutb_Minar_2022.jpg/960px-Qutb_Minar_2022.jpg"
     },
 
     {
@@ -74,7 +74,7 @@ export const dummyPlaces = {
       name: "Lotus Temple",
       distance: 6.7,
       rating: 4.6,
-      img: "https://images.unsplash.com/photo-1688257609244-3f2a893f19d6?w=800"
+      img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/LotusDelhi.jpg/960px-LotusDelhi.jpg"
     }
   ]
 

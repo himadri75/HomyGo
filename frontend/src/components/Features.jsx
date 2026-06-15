@@ -1,103 +1,153 @@
-import { FaHome, FaMapMarkedAlt, FaRobot, FaLanguage } from "react-icons/fa";
+import { Bot, Home, Languages, MapPinned, Sparkles } from "lucide-react";
+import { useState, useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 const features = [
   {
-    icon: <FaHome />,
-    title: "Authentic Homestays",
-    desc: "Discover real local homes and stay with verified families across India.",
-    highlight: "Verified & trusted stays"
+    icon: Home,
+    title: "Host-led stays",
+    desc: "Book homes with verified families, regional meals, and hospitality that feels personal.",
+    stat: "50K+ travelers",
+    accent: "from-cyan-300 to-emerald-300",
   },
   {
-    icon: <FaMapMarkedAlt />,
-    title: "Local Experiences",
-    desc: "Explore hidden gems, traditions, and unique cultural activities.",
-    highlight: "Beyond tourist spots"
+    icon: MapPinned,
+    title: "Hidden local routes",
+    desc: "Find markets, trails, ceremonies, and experiences that rarely show up in guidebooks.",
+    stat: "120+ routes",
+    accent: "from-amber-300 to-orange-300",
   },
   {
-    icon: <FaRobot />,
-    title: "Smart Planning",
-    desc: "AI-powered itineraries tailored to your travel style and budget.",
-    highlight: "Personalized routes"
+    icon: Bot,
+    title: "AI trip planning",
+    desc: "Shape a day-by-day plan around your budget, travel pace, and favorite type of stay.",
+    stat: "Smart itineraries",
+    accent: "from-sky-300 to-cyan-300",
   },
   {
-    icon: <FaLanguage />,
-    title: "Language Support",
-    desc: "Communicate easily with real-time translation and assistance.",
-    highlight: "No language barriers"
-  }
+    icon: Languages,
+    title: "Language support",
+    desc: "Use translation assistance to make host conversations smoother in new regions.",
+    stat: "Travel with ease",
+    accent: "from-rose-300 to-amber-200",
+  },
 ];
 
 const Features = () => {
+  const { darkmode } = useContext(AppContext);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [opacity, setOpacity] = useState(0);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCoords({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+    setOpacity(1);
+  };
+
+  const handleMouseLeave = () => {
+    setOpacity(0);
+  };
+
   return (
     <section
       id="features"
-      className="py-24 bg-blue-50 dark:bg-gray-950 transition-colors duration-300"
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative overflow-hidden bg-[#f7fbff] py-24 text-slate-950 transition-colors duration-300 dark:bg-[#050914] dark:text-white"
     >
+      {/* Static Dot Grid Background */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.08] dark:opacity-[0.14]"
+        style={{
+          backgroundImage: 'radial-gradient(circle, currentColor 1px, transparent 1px)',
+          backgroundSize: '24px 24px',
+        }}
+        aria-hidden="true"
+      />
 
-      <div className="max-w-7xl mx-auto px-6">
+      {/* Interactive Hover Glow Dot Grid Spotlight */}
+      <div 
+        className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+        style={{
+          backgroundImage: `radial-gradient(circle, ${darkmode ? '#38bdf8' : '#2563eb'} 1.5px, transparent 1.5px)`,
+          backgroundSize: '24px 24px',
+          WebkitMaskImage: `radial-gradient(circle at ${coords.x}px ${coords.y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 130px)`,
+          maskImage: `radial-gradient(circle at ${coords.x}px ${coords.y}px, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 130px)`,
+          opacity: opacity,
+        }}
+        aria-hidden="true"
+      />
 
-        {/* Heading */}
-        <div className="text-center mb-16">
+      <div className="relative mx-auto max-w-7xl px-6">
+        <div className="grid items-end gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+          <div>
+            <div className="mb-4 inline-flex items-center gap-2 rounded-md border border-cyan-200 bg-white px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-cyan-700 shadow-sm dark:border-cyan-400/20 dark:bg-white/10 dark:text-cyan-200">
+              <Sparkles className="h-4 w-4" />
+              Built for real travel
+            </div>
 
-          <h2 className="text-4xl md:text-5xl font-bold text-blue-900 dark:text-white mb-4">
+            <h2 className="text-4xl font-black leading-tight tracking-normal sm:text-5xl">
+              A travel home page with more depth than a booking grid.
+            </h2>
 
-            Why Choose{" "}
+            <p className="mt-5 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300">
+              HomyGo combines stays, culture, planning, and language help into one practical travel
+              layer for exploring India with more confidence.
+            </p>
+          </div>
 
-            <span className="text-blue-600 dark:text-blue-400">
-              HomyGo
-            </span>
-
-          </h2>
-
-          <p className="text-blue-800 dark:text-gray-300 text-lg max-w-2xl mx-auto leading-relaxed">
-
-            Everything you need to explore India in a smarter,
-            more authentic way.
-
-          </p>
-
+          <div className="depth-scene">
+            <div className="home-depth-card rounded-lg border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-white/10">
+              <div className="grid gap-4 sm:grid-cols-3">
+                {[
+                  ["Verified hosts", "Trust checks before the stay"],
+                  ["No booking fees", "Cleaner prices for travelers"],
+                  ["Instant support", "Help when plans shift"],
+                ].map(([title, detail]) => (
+                  <div key={title} className="border-l-2 border-cyan-300 pl-4">
+                    <p className="font-black text-slate-950 dark:text-white">{title}</p>
+                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-300">
+                      {detail}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="depth-scene mt-14 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {features.map((feature) => {
+            const Icon = feature.icon;
 
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="group bg-white dark:bg-gray-900 border border-blue-200 dark:border-gray-800 p-8 shadow-md dark:shadow-black/20 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 rounded-2xl"
-            >
+            return (
+              <div
+                key={feature.title}
+                className="home-depth-card rounded-lg border border-slate-200 bg-white p-6 shadow-xl dark:border-white/10 dark:bg-slate-900/80"
+              >
+                <div
+                  className={`mb-6 h-1.5 w-24 rounded-md bg-linear-to-r ${feature.accent}`}
+                />
 
-              {/* Icon */}
-              <div className="w-14 h-14 flex items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-2xl mb-6 group-hover:bg-blue-600 dark:group-hover:bg-blue-500 group-hover:text-white transition-all duration-300">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-slate-950 text-white shadow-lg shadow-slate-950/20 dark:bg-cyan-300 dark:text-slate-950">
+                  <Icon className="h-6 w-6" />
+                </div>
 
-                {feature.icon}
+                <h3 className="text-xl font-black text-slate-950 dark:text-white">{feature.title}</h3>
 
+                <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                  {feature.desc}
+                </p>
+
+                <div className="mt-6 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-700 dark:border-white/10 dark:bg-white/10 dark:text-cyan-100">
+                  {feature.stat}
+                </div>
               </div>
-
-              {/* Title */}
-              <h3 className="text-xl font-semibold text-blue-900 dark:text-white mb-3">
-
-                {feature.title}
-
-              </h3>
-
-              {/* Description */}
-              <p className="text-blue-800 dark:text-gray-400 text-sm leading-relaxed mb-5">
-
-                {feature.desc}
-
-              </p>
-
-              {/* Highlight */}
-              <div className="inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-full">
-
-                ✨ {feature.highlight}
-
-              </div>
-
-            </div>
-          ))}
-
+            );
+          })}
         </div>
       </div>
     </section>
