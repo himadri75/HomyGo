@@ -363,13 +363,13 @@ Our talented team of developers and designers working together to build HomyGo:
     </td>
     <td align="center" width="20%">
       <h3>Anish Kar</h3>
-      <em>Client Communication Engineer</em><br/>
+      <em>Data Engineer</em><br/>
       <a href="https://www.linkedin.com/in/anish-kar-b6764b259/">LinkedIn</a> | 
       <a href="https://github.com/AnishCoding2004">GitHub</a>
     </td>
     <td align="center" width="20%">
       <h3>Arpan Santra</h3>
-      <em>Data Engineer</em><br/>
+      <em>Client Communication Engineer</em><br/>
       <a href="https://www.linkedin.com/in/arpansantra/">LinkedIn</a> | 
       <a href="https://github.com/itsarpansantra">GitHub</a>
     </td>
