@@ -23,6 +23,12 @@ import Features from "./pages/Features";
 import AllWishlist from "./pages/AllWishlist";
 import AllBookings from "./pages/AllBookings";
 import SOS from "./pages/SOS";
+import Admin from "./pages/admin/Admin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import ManageHomestays from "./pages/admin/ManageHomestays";
+import Host from "./pages/host/Host";
+import HostDashboard from "./pages/host/HostDashboard";
+import AddHomestay from "./pages/host/AddHomestay";
 
 const App = () => {
   const { fetchUserDetails, darkmode } = useContext(AppContext);
@@ -87,6 +93,18 @@ const App = () => {
           <Route path="/translate" element={<TranslatorPage />} />
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/cultural-feed" element={<CulturalFeed />} />
+
+          <Route path="/admin" element={<Admin />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="manage-homestay" element={<ManageHomestays />} />
+          </Route>
+
+          <Route path="/host" element={<Host />}>
+            <Route index element={<HostDashboard />} />
+            <Route path="dashboard" element={<HostDashboard />} />
+            <Route path="add-homestay" element={<AddHomestay />} />
+          </Route>
 
         </Routes>
       </div>

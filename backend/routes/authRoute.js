@@ -7,7 +7,8 @@ const { createUser,
   removeFromWishlist,
   getWishlist,
   updateEmergencyEmailAndPhone,
-  logout
+  logout,
+  adminLogin
 } = require("../controllers/authController");
 const { addUserLocation } = require("../controllers/geoLocationController");
 const authMiddleware = require("../middleware/authMiddleware");
@@ -21,6 +22,7 @@ const Route = express.Router();
 Route.post("/register", createUser);
 
 Route.post("/login", login);
+Route.post("/admin", adminLogin);
 
 Route.get("", authMiddleware, getUserDetails);
 

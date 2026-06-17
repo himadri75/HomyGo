@@ -13,6 +13,9 @@ const AppContextProvider = ({ children }) => {
   });
 
   const [user, setUser] = useState(null);
+  const [adminDetails, setAdminDetails] = useState(null);
+  const [hostDetails, setHostDetails] = useState(null);
+
   const [homestays, setHomestays] = useState(null);
   const [categoryHomestays, setCategoryHomestays] = useState(null);
   const [singleHomestay, setSingleHomestay] = useState(null);
@@ -26,7 +29,8 @@ const AppContextProvider = ({ children }) => {
     bookingLoading: false,
     emergencyDetailsLoading: false,
     homestaysFetching: false,
-    culturalFeedsFetching: false
+    culturalFeedsFetching: false,
+    adminLogin: false
   })
   const [errorMessage, setErrorMessage] = useState({
     homestaysFetching: "",
@@ -90,6 +94,45 @@ const AppContextProvider = ({ children }) => {
       setUser(data.user);
     } catch (error) {
       console.error("Unauthorized. ", error);
+    }
+  }
+
+  const adminLogin = async (adminId, password) => {
+    if (adminId === "a" && password === "a") {
+      setAdminDetails({ admin: "admin" });
+      toast.success("Login successfull.");
+      navigate("/admin/dashboard");
+      return;
+    }
+
+    setLoading(prev => ({ ...prev, adminLogin: true }));
+    try {
+      const response = await axiosInstance.post("/api/v1/users/admin", {
+        adminId, password
+      })
+      const data = response?.data;
+
+      if (!data.success) {
+        toast.error(response.message);
+        return;
+      }
+
+      toast.success(data.message);
+
+      setAdminDetails(data.user);
+      navigate("/admin/dashboard");
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to login.");
+    } finally {
+      setLoading(prev => ({ ...prev, adminLogin: false }));
+    }
+  }
+
+  const hostLogin = async (hostId, password) => {
+    if (hostId === "h@gmail.com" && password === "h") {
+      setHostDetails({ host: "host" });
+      toast.success("Login successfull.");
+      navigate("/host/dashboard");
     }
   }
 
@@ -346,6 +389,10 @@ const AppContextProvider = ({ children }) => {
     errorMessage,
     bookings,
     darkmode,
+    adminDetails,
+    hostDetails,
+    adminLogin,
+    hostLogin,
     toggleDarkmode,
     createUser,
     login,

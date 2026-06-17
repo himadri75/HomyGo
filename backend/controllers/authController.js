@@ -115,12 +115,60 @@ const login = async (req, res) => {
   }
 };
 
+const adminLogin = async (req, res) => {
+  try {
+    const { adminId, password } = req.body;
+
+    if (!adminId || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required."
+      });
+    }
+
+    if (adminId !== process.env.ADMIN_ID) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Admin ID or Password."
+      });
+    }
+
+    if (password !== process.env.ADMIN_PASSWORD) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid Admin ID or Password."
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Login successful.",
+      user: {
+        admin_id: process.env.ADMIN_ID,
+        name: "admin",
+        role: "ADMIN"
+      }
+    });
+  } catch (error) {
+    console.error("Admin Login ERROR : ", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error."
+    });
+  }
+
+}
+
+const createHost = async (req, res) => {
+  const { } = req.body;
+}
+
 const getUserDetails = async (req, res) => {
   const { id } = req.user;
 
   try {
     const [result] = await db.query(
-      'SELECT id, name, email, gender, dob, is_sos_active, emergency_email, emergency_phone, status, created_at FROM users WHERE id = ?;',
+      'SELECT id, name, email, gender, dob, role, is_sos_active, emergency_email, emergency_phone, status, created_at FROM users WHERE id = ?;',
       [id]
     );
 
@@ -357,6 +405,7 @@ const getWishlist = async (req, res) => {
 module.exports = {
   createUser,
   login,
+  adminLogin,
   getUserDetails,
   logout,
   updateEmergencyEmailAndPhone,

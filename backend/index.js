@@ -9,6 +9,7 @@ const authRoute = require("./routes/authRoute");
 const homestayRoute = require("./routes/homestayRoute");
 const feedRoute = require("./routes/feedRoute");
 const bookingRoute = require("./routes/bookingRoute");
+const hostRoute = require("./routes/hostRoute");
 
 const app = express();
 const PORT = 7777;
@@ -52,6 +53,7 @@ app.use("/api/v1/users", authRoute);
 app.use("/api/v1/homestays", homestayRoute);
 app.use("/api/v1/feeds", feedRoute);
 app.use("/api/v1/bookings", bookingRoute);
+app.use("/api/v1/host", hostRoute);
 
 app.use((req, res) => {
   res.status(404).json({

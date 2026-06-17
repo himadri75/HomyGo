@@ -9,6 +9,7 @@ import {
   FaArrowRight,
   FaPaperPlane,
 } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   const { darkmode } = useContext(AppContext);
@@ -38,7 +39,7 @@ const Footer = () => {
           
           {/* Brand & Description */}
           <div className="md:col-span-2 pr-0 md:pr-10">
-            <h2 className="text-3xl font-extrabold mb-4 tracking-tight bg-gradient-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+            <h2 className="text-3xl font-extrabold mb-4 tracking-tight bg-linear-to-r from-blue-600 to-cyan-500 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
               HomyGo
             </h2>
             <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">
@@ -55,7 +56,7 @@ const Footer = () => {
               </a>
               <a
                 href="#"
-                className="w-10 h-10 rounded-full flex items-center justify-center bg-slate-200/40 dark:bg-slate-900/40 border border-slate-300/30 dark:border-slate-800/60 text-slate-600 dark:text-slate-400 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:text-white hover:border-pink-500 transition duration-300 shadow-sm"
+                className="w-10 h-10 rounded-full flex items-center justify-center bg-slate-200/40 dark:bg-slate-900/40 border border-slate-300/30 dark:border-slate-800/60 text-slate-600 dark:text-slate-400 hover:bg-linear-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:text-white hover:border-pink-500 transition duration-300 shadow-sm"
               >
                 <FaInstagram size={14} />
               </a>
@@ -71,12 +72,12 @@ const Footer = () => {
           {/* Column 2: Explore */}
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-4">
-              Explore
+              Access
             </h3>
             <ul className="space-y-2 flex flex-col items-start text-sm">
-              <li><span className={linkClass}>Features</span></li>
-              <li><span className={linkClass}>Destinations</span></li>
-              <li><span className={linkClass}>Experiences</span></li>
+              <li><NavLink to="/host/dashboard" className={linkClass}>Host Access</NavLink></li>
+              <li><NavLink to="/admin/dashboard" className={linkClass}>Admin</NavLink></li>
+              <li><span className={linkClass}>Report</span></li>
               <li><span className={linkClass}>Reviews</span></li>
             </ul>
           </div>
@@ -126,7 +127,7 @@ const Footer = () => {
 
         {/* Newsletter / Join Section */}
         <div className="relative mb-12 p-6 md:p-8 bg-slate-200/20 dark:bg-slate-900/30 border border-slate-300/20 dark:border-slate-800/40 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-6 overflow-hidden">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808003_1px,transparent_1px),linear-gradient(to_bottom,#80808003_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808003_1px,transparent_1px),linear-gradient(to_bottom,#80808003_1px,transparent_1px)] bg-size-[14px_24px] pointer-events-none" />
           
           <div className="text-center md:text-left max-w-lg relative z-10">
             <h4 className="text-lg font-bold mb-1.5 text-slate-800 dark:text-white">
@@ -141,13 +142,13 @@ const Footer = () => {
             <input
               type="email"
               placeholder="Your email address"
-              className="px-4 py-3 border border-slate-300/60 dark:border-slate-800 bg-white/80 dark:bg-slate-950 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 text-sm rounded-xl outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 min-w-[240px] shadow-sm transition"
+              className="px-4 py-3 border border-slate-300/60 dark:border-slate-800 bg-white/80 dark:bg-slate-950 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 text-sm rounded-xl outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 min-w-60 shadow-sm transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <button
               type="submit"
-              className="py-3 px-6 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-semibold text-sm rounded-xl flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all duration-300"
+              className="py-3 px-6 bg-linear-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-semibold text-sm rounded-xl flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all duration-300"
             >
               <span>Subscribe</span>
               <FaPaperPlane size={11} />
