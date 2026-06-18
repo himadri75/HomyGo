@@ -5,7 +5,7 @@ import { assets } from "../assets/asset";
 import { AppContext } from "../context/AppContext";
 
 const heroVideoSrc =
-  "/Untitled design.mp4";
+  "/homygo_bg.mp4";
 
 const tripSignals = [
   { icon: ShieldCheck, label: "Verified stays", value: "50K+" },
