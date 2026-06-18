@@ -1,11 +1,34 @@
 import React, { useState, useContext } from 'react'
-import { Upload, X, Plus, Loader } from 'lucide-react'
+import { Upload, X, Plus, Loader, Lock } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { AppContext } from '../../context/AppContext'
 import axiosInstance from '../../config/axiosInstance'
+import { Link } from 'react-router-dom'
 
 const AddHomestay = () => {
-  const { user, darkmode } = useContext(AppContext)
+  const { user, darkmode, hostVerification } = useContext(AppContext)
+
+  if (!hostVerification) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 text-center min-h-[60vh]">
+        <div className={`p-5 rounded-full ${darkmode ? 'bg-amber-500/10 text-amber-400' : 'bg-amber-50 text-amber-600'} mb-6 animate-bounce`}>
+          <Lock size={48} />
+        </div>
+        <h2 className={`text-3xl font-extrabold mb-3 tracking-tight ${darkmode ? 'text-white' : 'text-slate-900'}`}>
+          Verification Required
+        </h2>
+        <p className={`max-w-md mb-8 text-base leading-relaxed ${darkmode ? 'text-gray-400' : 'text-slate-600'}`}>
+          To start listing your homestays on HomyGo, you need to verify your account by providing your personal and payment details.
+        </p>
+        <Link
+          to="/host/dashboard"
+          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 hover:scale-105 active:scale-95 text-white font-semibold rounded-xl shadow-lg transition duration-200"
+        >
+          Verify Profile in Dashboard
+        </Link>
+      </div>
+    )
+  }
   const [loading, setLoading] = useState(false)
 
   // Form state

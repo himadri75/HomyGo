@@ -1,5 +1,8 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, HomeIcon, SquarePen } from "lucide-react";
+import { LayoutDashboard, HomeIcon, SquarePen, Lock } from "lucide-react";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-hot-toast";
 
 const adminNavItems = [
   {
@@ -28,6 +31,7 @@ const hostNavItems = [
 ];
 
 function Sidebar({ role }) {
+  const { hostVerification } = useContext(AppContext);
   const navItems = role === "ADMIN" ? adminNavItems : role === "HOST" ? hostNavItems : [];
 
   return (
@@ -40,6 +44,24 @@ function Sidebar({ role }) {
         <nav className="space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
+            const isLocked = role === "HOST" && item.to === "/host/add-homestay" && !hostVerification;
+
+            if (isLocked) {
+              return (
+                <button
+                  key={item.label}
+                  type="button"
+                  onClick={() => toast.error("Please complete your verification in the Dashboard to unlock Add Homestay!")}
+                  className="w-full flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium transition-colors text-slate-400 dark:text-gray-500 hover:bg-gray-100/50 dark:hover:bg-gray-900/50 cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon size={18} />
+                    <span>{item.label}</span>
+                  </div>
+                  <Lock size={14} className="text-amber-500 dark:text-amber-600 animate-pulse" />
+                </button>
+              );
+            }
 
             return (
               <NavLink

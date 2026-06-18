@@ -1,13 +1,44 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+  --footer-sky-start: #f5f6f2;
+  --footer-sky-end: #ebede7;
+  --footer-sun-start: #eaece4;
+  --footer-sun-end: #e2e4dc;
+  --footer-mountain-back: #abc2a3;
+  --footer-mountain-front: #8baf80;
+  --footer-forest-back: #5c8353;
+  --footer-forest-front: #3d5e34;
+  --footer-river-start: #e0f2f1;
+  --footer-river-end: #b2dfdb;
+  --footer-foreground-slope: #f5f6f2;
+}
+
+.dark {
+  --footer-sky-start: #040814;
+  --footer-sky-end: #070d20;
+  --footer-sun-start: #111d33;
+  --footer-sun-end: #1c2d42;
+  --footer-mountain-back: #0f1c2d;
+  --footer-mountain-front: #0c233c;
+  --footer-forest-back: #0a2f1d;
+  --footer-forest-front: #051d11;
+  --footer-river-start: #0d3836;
+  --footer-river-end: #00796b;
+  --footer-foreground-slope: #040814;
+}
+
 html {
+  margin: 0;
+  padding: 0;
   scroll-behavior: smooth;
   cursor: url('/wooden_sword_cursor.png') 0 0, auto;
 }
 
 body {
   margin: 0;
+  padding: 0;
   background: #eff6ff;
   cursor: url('/wooden_sword_cursor.png') 0 0, auto;
   transition: background-color 300ms ease;
@@ -40,8 +71,9 @@ a:hover, button:hover, .cursor-pointer:hover, [role="button"]:hover {
 
 .hero-video-frame {
   position: absolute;
-  inset: 0;
+  inset: -2px;
   overflow: hidden;
+  background-color: #020617;
 }
 
 .hero-video-frame video,
@@ -49,8 +81,8 @@ a:hover, button:hover, .cursor-pointer:hover, [role="button"]:hover {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: max(100vw, 177.78vh);
-  height: max(56.25vw, 100vh);
+  width: max(101vw, 179.56vh);
+  height: max(57.25vw, 101vh);
   transform: translate(-50%, -50%);
   border: 0;
   pointer-events: none;

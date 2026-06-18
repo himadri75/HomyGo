@@ -15,6 +15,24 @@ const AppContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [adminDetails, setAdminDetails] = useState(null);
   const [hostDetails, setHostDetails] = useState(null);
+  const [hostVerification, setHostVerification] = useState(() => {
+    try {
+      const saved = localStorage.getItem('host_verification');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const verifyHost = (details) => {
+    localStorage.setItem('host_verification', JSON.stringify(details));
+    setHostVerification(details);
+  };
+
+  const removeHostVerification = () => {
+    localStorage.removeItem('host_verification');
+    setHostVerification(null);
+  };
 
   const [homestays, setHomestays] = useState(null);
   const [categoryHomestays, setCategoryHomestays] = useState(null);
@@ -432,6 +450,9 @@ const AppContextProvider = ({ children }) => {
     darkmode,
     adminDetails,
     hostDetails,
+    hostVerification,
+    verifyHost,
+    removeHostVerification,
     adminLogin,
     hostLogin,
     toggleDarkmode,
