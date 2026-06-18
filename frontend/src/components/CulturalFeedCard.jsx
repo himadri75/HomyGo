@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Heart, Share2, MapPin, User, Calendar } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { NavLink } from 'react-router-dom';
 
 const CulturalFeedCard = ({ feed }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -27,17 +28,17 @@ const CulturalFeedCard = ({ feed }) => {
     <div className="bg-white dark:bg-gray-900 border border-blue-200 dark:border-gray-800 shadow-md hover:shadow-lg dark:shadow-black/30 transition rounded-lg overflow-hidden">
 
       {/* Image Section */}
-      <div className="h-64 overflow-hidden group">
-
-        <img
-          src={feed.image_url}
-          alt={feed.title}
-          loading="lazy"
-          decoding="async"
-          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
-        />
-
-      </div>
+      <NavLink to={`/cultural-feed/${feed.id}`}>
+        <div className="h-64 overflow-hidden group">
+          <img
+            src={feed.image_url}
+            alt={feed.title}
+            loading="lazy"
+            decoding="async"
+            className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          />
+        </div>
+      </NavLink>
 
       {/* Content Section */}
       <div className="p-5">

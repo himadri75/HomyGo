@@ -29,6 +29,7 @@ import ManageHomestays from "./pages/admin/ManageHomestays";
 import Host from "./pages/host/Host";
 import HostDashboard from "./pages/host/HostDashboard";
 import AddHomestay from "./pages/host/AddHomestay";
+import SingleCulturalFeed from "./pages/SingleCulturalFeed";
 
 const App = () => {
   const { fetchUserDetails, darkmode } = useContext(AppContext);
@@ -93,6 +94,7 @@ const App = () => {
           <Route path="/translate" element={<TranslatorPage />} />
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/cultural-feed" element={<CulturalFeed />} />
+          <Route path="/cultural-feed/:id" element={<SingleCulturalFeed />} />
 
           <Route path="/admin" element={<Admin />}>
             <Route index element={<AdminDashboard />} />

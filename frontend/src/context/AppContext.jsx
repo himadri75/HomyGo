@@ -23,6 +23,9 @@ const AppContextProvider = ({ children }) => {
   const [page, setPage] = useState(1);
   const [wishlist, setWishlist] = useState(null);
   const [bookings, setBookings] = useState(null);
+  const [similarFeeds, setSimilarFeeds] = useState(null);
+  const [singleFeed, setSingleFeed] = useState(null);
+
   const [loading, setLoading] = useState({
     createAccount: false,
     login: false,
@@ -30,16 +33,16 @@ const AppContextProvider = ({ children }) => {
     emergencyDetailsLoading: false,
     homestaysFetching: false,
     culturalFeedsFetching: false,
-    adminLogin: false
+    adminLogin: false,
+    fetchSimilarFeeds: false,
+    fetchSingleFeed: false
   })
   const [errorMessage, setErrorMessage] = useState({
     homestaysFetching: "",
     culturalFeedsFetching: ""
   });
 
-  const toggleDarkmode = () => {
-    setDarkmode(prev => !prev);
-  }
+  const toggleDarkmode = () => { setDarkmode(prev => !prev); }
 
   const createUser = async (name, email, password, gender, dob) => {
     setLoading(prev => ({ ...prev, createAccount: true }));
@@ -173,6 +176,42 @@ const AppContextProvider = ({ children }) => {
       setErrorMessage(prev => ({ ...prev, homestaysFetching: error?.response?.data?.message || "Failed to load homestays." }));
     } finally {
       setLoading(prev => ({ ...prev, homestaysFetching: false }));
+    }
+  }
+
+  const fetchSimilarFeedsByLocation = async (city, district, state, country) => {
+    setLoading(prev => ({ ...prev, fetchSimilarFeeds: true }));
+    try {
+      const response = await axiosInstance.get(`/api/v1/feeds/place?city=${city}&district=${district}&state=${state}&country=${country}`);
+      const data = response?.data;
+
+      if (data.success) {
+        setSimilarFeeds(data.feeds);
+      }
+
+    } catch (error) {
+      console.error(error?.response?.data?.message || "Failed to fetch homestays.")
+      // setErrorMessage(prev => ({ ...prev, homestaysFetching: error?.response?.data?.message || "Failed to load homestays." }));
+    } finally {
+      setLoading(prev => ({ ...prev, fetchSimilarFeeds: false }));
+    }
+  }
+
+  const fetchFeedById = async (id) => {
+    setLoading(prev => ({ ...prev, fetchSingleFeed: true }));
+    try {
+      const response = await axiosInstance.get(`/api/v1/feeds/${id}`);
+      const data = response?.data;
+
+      if (data.success) {
+        setSingleFeed(data.feed);
+      }
+
+    } catch (error) {
+      console.error(error?.response?.data?.message || "Failed to fetch homestays.")
+      // setErrorMessage(prev => ({ ...prev, homestaysFetching: error?.response?.data?.message || "Failed to load homestays." }));
+    } finally {
+      setLoading(prev => ({ ...prev, fetchSingleFeed: false }));
     }
   }
 
@@ -380,6 +419,8 @@ const AppContextProvider = ({ children }) => {
   const values = {
     user,
     homestays,
+    similarFeeds,
+    singleFeed,
     categoryHomestays,
     singleHomestay,
     culturalFeeds,
@@ -403,6 +444,8 @@ const AppContextProvider = ({ children }) => {
     fetchHomestaysByCategory,
     fetchHomestaysByCategoryAndId,
     fetchCulturalFeeds,
+    fetchSimilarFeedsByLocation,
+    fetchFeedById,
     addToWishlist,
     removeFromWishlist,
     checkWishlist,

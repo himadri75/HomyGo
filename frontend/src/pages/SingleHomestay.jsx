@@ -3,10 +3,11 @@ import { useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext';
 import { Star, MapPin, Users, Wifi, Heart, Share2, ChevronLeft, ChevronRight, Mail, Phone, Cookie } from 'lucide-react';
 import toast from 'react-hot-toast';
+import CulturalFeedCard from '../components/CulturalFeedCard';
 
 const SingleHomestay = () => {
   const { category, id } = useParams();
-  const { singleHomestay, fetchHomestaysByCategoryAndId, addToWishlist, removeFromWishlist, checkWishlist, user, createBooking } = useContext(AppContext);
+  const { singleHomestay, fetchHomestaysByCategoryAndId, addToWishlist, removeFromWishlist, checkWishlist, user, createBooking, similarFeeds, fetchSimilarFeedsByLocation } = useContext(AppContext);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [startDate, setStartDate] = useState("");
@@ -27,6 +28,13 @@ const SingleHomestay = () => {
       })();
     }
   }, [category, id, user])
+
+  useEffect(() => {
+    if (singleHomestay) {
+      fetchSimilarFeedsByLocation(singleHomestay.city, singleHomestay.district, singleHomestay.state, singleHomestay.country);
+    }
+
+  }, [singleHomestay]);
 
   if (!singleHomestay) {
     return (
@@ -546,6 +554,25 @@ const SingleHomestay = () => {
 
           </div>
         </div>
+
+        {similarFeeds && similarFeeds.length > 0 && (
+          <div className="mt-12">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-blue-900 dark:text-white mb-2">
+                Similar Cultural Feeds
+              </h2>
+              <p className="text-sm text-blue-700 dark:text-gray-300">
+                Stories and traditions from the same area.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {similarFeeds.map((feed) => (
+                <CulturalFeedCard key={feed.id} feed={feed} />
+              ))}
+            </div>
+          </div>
+        )}
 
       </div>
     </div>
