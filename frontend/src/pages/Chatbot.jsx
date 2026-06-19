@@ -13,7 +13,7 @@ const Chatbot = () => {
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-2.5rem)] max-w-6xl flex-col">
         <header className="mb-5 flex items-center justify-between">
           <Link to="/" className="group flex items-center gap-3">
-            <YatriSevaBotLogo size="sm" className="transition group-hover:scale-105" />
+            <YatriSevaBotLogo size="sm" animated={false} className="transition group-hover:scale-105" />
             <span>
               <span className="block text-[15px] font-bold leading-5 text-white">
                 YatriSeva

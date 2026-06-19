@@ -5,7 +5,7 @@ const { sendLoginSuccessMail, sendAccountCreatedMail } = require("../service/mai
 const createUser = async (req, res) => {
   const { name, email, password, gender, dob } = req.body;
 
-  if (!name || !email || !password, !gender || !dob) {
+  if (!name || !email || !password || !gender || !dob) {
     return res.status(400).json({
       success: false,
       message: "All fields are required"

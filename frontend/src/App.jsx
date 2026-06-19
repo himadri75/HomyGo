@@ -12,7 +12,7 @@ import ItineraryPage from "./pages/ItineraryPage";
 import TourPlanPage from "./pages/TourPlanPage";
 import TranslatorPage from "./pages/TranslatorPage";
 import Chatbot from "./pages/Chatbot";
-import { useContext, useEffect, useCallback } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "./context/AppContext";
 import SimilarHomestays from "./pages/SimilarHomestays";
 import ScrollToTop from "./components/ScrollToTop";
@@ -36,40 +36,71 @@ const App = () => {
 
   useEffect(() => {
     fetchUserDetails();
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (darkmode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
     } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
     }
   }, [darkmode]);
 
-  const checkServerStatus = useCallback(async () => {
-    const baseURL = import.meta.env.VITE_SERVER_URL;
-    const response = await fetch(`${baseURL}/health`);
+  // ── Server status check ──
+  useEffect(() => {
+    let retryTimer = null;
 
-    if (!response.ok) {
-      throw new Error("Server not responding");
-    }
+    const checkServer = async (isRetry = false) => {
+      try {
+        // Plain fetch (no credentials) — /health is public, no preflight needed
+        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/health`, {
+          method: "GET",
+          mode: "cors",
+        });
+        if (res.ok || res.status === 304) {
+          toast.success("Server connected ✅", {
+            id: "server-status",
+            duration: 3000,
+            style: {
+              background: "#f0fdf4",
+              color: "#166534",
+              border: "1px solid #bbf7d0",
+              fontWeight: 600,
+              fontSize: "13px",
+            },
+            iconTheme: { primary: "#16a34a", secondary: "#f0fdf4" },
+          });
+        } else {
+          throw new Error(`HTTP ${res.status}`);
+        }
+      } catch {
+        if (!isRetry) {
+          retryTimer = setTimeout(() => checkServer(true), 4000);
+        } else {
+          toast.error("Server disconnected ❌", {
+            id: "server-status",
+            duration: Infinity,
+            style: {
+              background: "#fef2f2",
+              color: "#991b1b",
+              border: "1px solid #fecaca",
+              fontWeight: 600,
+              fontSize: "13px",
+            },
+          });
+        }
+      }
+    };
 
-    return response.json();
+    const timer = setTimeout(() => checkServer(false), 3000);
+    return () => {
+      clearTimeout(timer);
+      if (retryTimer) clearTimeout(retryTimer);
+    };
   }, []);
 
-  const handleServerStatus = useCallback(() => {
-    toast.promise(checkServerStatus(), {
-      loading: "Checking server status...",
-      success: "Server is up and running",
-      error: "Server is currently down",
-    });
-  }, [checkServerStatus]);
-
-  useEffect(() => {
-    handleServerStatus();
-  }, [handleServerStatus]);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -107,7 +138,6 @@ const App = () => {
             <Route path="dashboard" element={<HostDashboard />} />
             <Route path="add-homestay" element={<AddHomestay />} />
           </Route>
-
         </Routes>
       </div>
 

@@ -111,4 +111,50 @@ const getSingleHomestayByCategoryAndId = async (req, res) => {
   }
 };
 
-module.exports = { getHomestays, getHomestaysByCategory, getSingleHomestayByCategoryAndId };
+// ─── Chatbot search: GET /api/v1/homestays/search?q=Manali&limit=6 ─────────────
+const searchHomestays = async (req, res) => {
+  const q = (req.query.q || "").trim();
+  const limit = Math.min(Math.max(1, Number(req.query.limit) || 6), 12);
+
+  if (!q || q.length < 2) {
+    return res.status(400).json({
+      success: false,
+      message: "Search query must be at least 2 characters."
+    });
+  }
+
+  try {
+    // Search in location field (city + state stored together e.g. "Manali, Himachal Pradesh")
+    const [results] = await db.query(
+      `SELECT id, title, location, category,
+              base_price,
+              discount_price,
+              COALESCE(NULLIF(discount_price, 0), base_price) AS price,
+              rating,
+              JSON_EXTRACT(images, '$[0]') AS image,
+              features
+       FROM homestays
+       WHERE location LIKE ?
+       ORDER BY rating DESC
+       LIMIT ?`,
+      [`%${q}%`, limit]
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Search results fetched.",
+      query: q,
+      count: results.length,
+      homestays: results
+    });
+
+  } catch (error) {
+    console.error("Homestay search error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error"
+    });
+  }
+};
+
+module.exports = { getHomestays, getHomestaysByCategory, getSingleHomestayByCategoryAndId, searchHomestays };

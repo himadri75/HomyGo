@@ -115,9 +115,11 @@ Triggers (be generous — if there's an India place name and any booking/travel 
 - "need a room in X", "looking for stay in X", "book X", "find X stays"
 - "going to X", "visiting X", "planning trip to X", "X trip", "X getaway"
 - "cheap stays X", "budget rooms X", "X for [N] days", "X place to stay"
+- "discounted stays in X", "deals in X", "offers in X", "cheap homestays in X"
 - Any short phrase with an India place name + any intent to go/stay/book/find
 
 → ACTION: Write ONE warm sentence acknowledgement (e.g. "Here are the best HomyGo stays in Manali for you! 🏡") then immediately add the search block below.
+→ If the user asks about discounts, deals, or budget stays, mention in your acknowledgement that HomyGo may show discounted rates where hosts have active offers.
 → Use the exact city or state name the user intends (apply India Geography Knowledge above).
 
 INTENT C — GENERAL CHAT / GREETINGS / OFF-TOPIC
@@ -197,6 +199,13 @@ RULES:
 - NEVER guess a city when user clearly said a state name
 - For bare place names (just "Manali", "Goa") → use that name directly as the place value
 
+DISCOUNT AWARENESS:
+- HomyGo homestays can have an active discount_price in the database (lower than base_price).
+- After a homestay search, you may receive a hidden [HomyGo search results] context block with real prices and discounts — ALWAYS use that data for pricing answers.
+- When discussing search results, mention discounted stays by name and state the discounted nightly rate plus savings (e.g. "₹5,600/night, down from ₹8,100").
+- If a user asks "which is cheapest?" or "any deals?", refer to the live search context and highlight discounted options first.
+- Do NOT invent discount prices — only use prices from the search context or general HomyGo budget tiers when no search data exists.
+
 ═══════════════════════════════════════════════════════
 TONE & BEHAVIOUR
 ═══════════════════════════════════════════════════════
@@ -206,6 +215,59 @@ TONE & BEHAVIOUR
 - For multi-part questions, answer every part
 - If asked about HomyGo specifically: HomyGo connects travellers with verified local homestay hosts across India. Budget: ₹800–1,500/night | Mid-range: ₹1,500–3,000/night | Premium: ₹3,000–5,000+/night
 - If asked for non-India travel advice, say you are designed for India travel and offer relevant Indian alternatives`;
+
+const formatHomestayPricingLine = (stay) => {
+  const basePrice = Number(stay.base_price ?? stay.price ?? 0);
+  const discountPrice = Number(stay.discount_price ?? 0);
+  const hasDiscount = discountPrice > 0 && discountPrice < basePrice;
+  const displayPrice = hasDiscount ? discountPrice : basePrice;
+
+  if (hasDiscount) {
+    return `- ${stay.title} (${stay.location}): ₹${displayPrice}/night (discounted from ₹${basePrice}, save ₹${basePrice - discountPrice})`;
+  }
+
+  return `- ${stay.title} (${stay.location}): ₹${displayPrice}/night`;
+};
+
+export const appendHomestaySearchContext = (place, homestays) => {
+  if (!place || !Array.isArray(homestays) || homestays.length === 0) {
+    return;
+  }
+
+  const pricingLines = homestays.map(formatHomestayPricingLine).join("\n");
+  const discountedCount = homestays.filter((stay) => {
+    const basePrice = Number(stay.base_price ?? stay.price ?? 0);
+    const discountPrice = Number(stay.discount_price ?? 0);
+    return discountPrice > 0 && discountPrice < basePrice;
+  }).length;
+
+  const discountNote =
+    discountedCount > 0
+      ? `${discountedCount} of these stays currently have an active HomyGo discount.`
+      : "None of these stays currently have an active discount.";
+
+  conversationHistory.push({
+    role: "user",
+    parts: [
+      {
+        text: `[HomyGo live search results for "${place}" — internal pricing context, not shown to the user]:\n${pricingLines}\n${discountNote}\nUse these exact prices when the user asks about cost, deals, discounts, or which stay is cheapest.`,
+      },
+    ],
+  });
+
+  conversationHistory.push({
+    role: "model",
+    parts: [
+      {
+        text: `Noted the live HomyGo prices and discounts for stays in ${place}.`,
+      },
+    ],
+  });
+
+  if (conversationHistory.length > 30) {
+    conversationHistory = conversationHistory.slice(-30);
+  }
+};
 
 // ─── Main chat function (multi-turn, stateful) ────────────────────────────────
 /**

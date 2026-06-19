@@ -1,3 +1,8 @@
+import { useEffect, useState } from "react";
+
+const BLINK_DURATION_MS = 200;
+const blinkMotion = `botLogoEyelidClose ${BLINK_DURATION_MS}ms cubic-bezier(0.4, 0, 0.2, 1) forwards`;
+
 const sizeClasses = {
   sm: {
     shell: "h-10 w-10",
@@ -22,11 +27,92 @@ const sizeClasses = {
   },
 };
 
-const YatriSevaBotLogo = ({ size = "md", className = "", animated = true }) => {
+const eyeClasses =
+  "relative block rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.95),0_0_14px_rgba(59,130,246,0.8)]";
+
+const BotEye = ({ side, animated, blinkTick, eyeClass }) => {
+  const position = side === "left" ? "left-[18%]" : "right-[18%]";
+  const animationDelay = side === "right" ? "14ms" : undefined;
+
+  if (!animated) {
+    return (
+      <span className={`absolute ${position} top-[31%] flex items-center justify-center`}>
+        <span className={`${eyeClasses} ${eyeClass}`} />
+      </span>
+    );
+  }
+
+  return (
+    <span
+      className={`absolute ${position} top-[31%] overflow-hidden rounded-full ${eyeClass}`}
+    >
+      <span className={`${eyeClasses} h-full w-full`} />
+      <span
+        key={`${side}-lid-${blinkTick}`}
+        style={{ animation: blinkMotion, animationDelay }}
+        className="pointer-events-none absolute inset-0 origin-top rounded-full bg-[#0b1220]"
+      />
+    </span>
+  );
+};
+
+const YatriSevaBotLogo = ({ size = "md", className = "", animated = false }) => {
   const classes = sizeClasses[size] || sizeClasses.md;
-  const eyeAnimation = animated
-    ? "animate-[botLogoBlink_4s_ease-in-out_infinite]"
-    : "";
+  const [blinkTick, setBlinkTick] = useState(0);
+
+  useEffect(() => {
+    if (!animated) return undefined;
+
+    let cancelled = false;
+    let blinkTimeout;
+    let doubleBlinkTimeout;
+
+    // const scheduleNextBlink = () => {
+    //   const pause = 2200 + Math.random() * 3800;
+    //   blinkTimeout = setTimeout(() => {
+    //     if (cancelled) return;
+
+    //     setBlinkTick((tick) => tick + 1);
+
+    //     if (Math.random() < 0.18) {
+    //       doubleBlinkTimeout = setTimeout(() => {
+    //         if (!cancelled) setBlinkTick((tick) => tick + 1);
+    //       }, 280);
+    //     }
+
+    //     scheduleNextBlink();
+    //   }, pause);
+    // };
+      const scheduleNextBlink = () => {
+    blinkTimeout = setTimeout(() => {
+      if (cancelled) return;
+
+      setBlinkTick((tick) => tick + 1);
+
+      // Optional double blink
+      if (Math.random() < 0.18) {
+        doubleBlinkTimeout = setTimeout(() => {
+          if (!cancelled) setBlinkTick((tick) => tick + 1);
+        }, 280);
+      }
+
+      scheduleNextBlink();
+    }, 1000); // blink every 1 second
+  };
+    const initialDelay = 1000;
+    blinkTimeout = setTimeout(() => {
+      if (!cancelled) {
+        setBlinkTick((tick) => tick + 1);
+        scheduleNextBlink();
+      }
+    }, initialDelay);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(blinkTimeout);
+      clearTimeout(doubleBlinkTimeout);
+    };
+  }, [animated]);
 
   return (
     <span
@@ -48,16 +134,18 @@ const YatriSevaBotLogo = ({ size = "md", className = "", animated = true }) => {
           className={`relative overflow-hidden border border-slate-950/70 bg-[radial-gradient(circle_at_32%_18%,rgba(148,163,184,0.3),transparent_22%),linear-gradient(145deg,#111827_0%,#020617_62%,#172033_100%)] shadow-[inset_0_2px_5px_rgba(255,255,255,0.12),0_4px_8px_rgba(15,23,42,0.16)] ${classes.face}`}
         >
           <span className="absolute inset-x-1 top-0 h-1 rounded-b-full bg-white/25" />
-          <span className="absolute left-[18%] top-[31%] flex items-center justify-center">
-            <span
-              className={`relative block rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.95),0_0_14px_rgba(59,130,246,0.8)] ${eyeAnimation} ${classes.eye}`}
-            />
-          </span>
-          <span className="absolute right-[18%] top-[31%] flex items-center justify-center">
-            <span
-              className={`relative block rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.95),0_0_14px_rgba(59,130,246,0.8)] ${eyeAnimation} ${classes.eye}`}
-            />
-          </span>
+          <BotEye
+            side="left"
+            animated={animated}
+            blinkTick={blinkTick}
+            eyeClass={classes.eye}
+          />
+          <BotEye
+            side="right"
+            animated={animated}
+            blinkTick={blinkTick}
+            eyeClass={classes.eye}
+          />
           <span
             className={`absolute left-1/2 top-[58%] -translate-x-1/2 rounded-b-full border-b-2 border-cyan-300 shadow-[0_4px_8px_rgba(34,211,238,0.7)] ${classes.smile}`}
           />

@@ -23,7 +23,7 @@ import ReactMarkdown from "react-markdown";
 import { useNavigate } from "react-router-dom";
 import remarkGfm from "remark-gfm";
 import axiosInstance from "../config/axiosInstance";
-import { clearChatHistory, sendChatMessage } from "../services/geminiChat";
+import { appendHomestaySearchContext, clearChatHistory, sendChatMessage } from "../services/geminiChat";
 import YatriSevaBotLogo from "./YatriSevaBotLogo";
 
 const initialMessage = {
@@ -296,6 +296,19 @@ const TypingIndicator = () => (
 );
 
 // ─── Inline Homestay Result Cards ────────────────────────────────────────────
+const getStayPricing = (stay) => {
+  const basePrice = Number(stay.base_price ?? stay.price ?? 0);
+  const discountPrice = Number(stay.discount_price ?? 0);
+  const hasDiscount = discountPrice > 0 && discountPrice < basePrice;
+
+  return {
+    basePrice,
+    displayPrice: hasDiscount ? discountPrice : basePrice,
+    hasDiscount,
+    savings: hasDiscount ? basePrice - discountPrice : 0,
+  };
+};
+
 const getStayTags = (stay) => {
   const rawFeatures = Array.isArray(stay.features)
     ? stay.features
@@ -304,6 +317,8 @@ const getStayTags = (stay) => {
       : [];
   const featureText = rawFeatures.join(" ").toLowerCase();
   const tags = [];
+
+  if (getStayPricing(stay).hasDiscount) tags.push("Discounted");
 
   if (/family|kid|children|large|group/.test(featureText)) tags.push("Family-friendly");
   if (/peace|quiet|calm|serene|nature|garden/.test(featureText)) tags.push("Peaceful");
@@ -342,6 +357,7 @@ const HomestayResultCards = ({ cards, isMaximized, onCardNavigate }) => {
       <div className={`grid gap-3.5 ${isMaximized ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-1 sm:grid-cols-2"}`}>
         {results.map((stay) => {
           const tags = getStayTags(stay);
+          const pricing = getStayPricing(stay);
           const imageUrl = stay.image?.replace(/^"|"$/g, "");
 
           return (
@@ -371,6 +387,11 @@ const HomestayResultCards = ({ cards, isMaximized, onCardNavigate }) => {
                   <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
                   {stay.rating || "4.8"}
                 </span>
+                {pricing.hasDiscount ? (
+                  <span className="absolute right-2.5 top-2.5 rounded-full bg-green-500 px-2 py-1 text-[10px] font-bold text-white shadow-sm">
+                    Save ₹{pricing.savings}
+                  </span>
+                ) : null}
                 <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/55 px-2.5 py-1 text-[10px] font-semibold capitalize text-white backdrop-blur-sm">
                   {stay.category || "Homestay"}
                 </span>
@@ -387,7 +408,16 @@ const HomestayResultCards = ({ cards, isMaximized, onCardNavigate }) => {
                     </p>
                   </div>
                   <span className="shrink-0 text-right text-sm font-bold text-blue-700 dark:text-blue-200">
-                    ₹{stay.price}
+                    {pricing.hasDiscount ? (
+                      <>
+                        <span className="block text-[10px] font-medium text-slate-400 line-through dark:text-slate-500">
+                          ₹{pricing.basePrice}
+                        </span>
+                        ₹{pricing.displayPrice}
+                      </>
+                    ) : (
+                      <>₹{pricing.displayPrice}</>
+                    )}
                     <span className="block text-[10px] font-medium text-slate-500 dark:text-slate-400">/night</span>
                   </span>
                 </div>
@@ -637,6 +667,7 @@ const YatriSevaChatPanel = ({
               place: homestaySearch.place,
               results: res.data.homestays,
             };
+            appendHomestaySearchContext(homestaySearch.place, res.data.homestays);
           } else {
             // No homestays in the database for this place
             noHomestays = { place: homestaySearch.place };
@@ -692,7 +723,7 @@ const YatriSevaChatPanel = ({
             onPointerDown={isMaximized ? undefined : onDragHandlePointerDown}
             title={onDragHandlePointerDown && !isMaximized ? "Drag to move chat" : undefined}
           >
-            <YatriSevaBotLogo size="md" />
+            <YatriSevaBotLogo size="md" animated />
             <div className="min-w-0">
               <p className="text-[15px] font-bold leading-5 text-slate-950 dark:text-white">
                 YatriSeva
