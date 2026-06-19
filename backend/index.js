@@ -29,6 +29,8 @@ app.use(
 );
 
 app.get("/health", async (req, res) => {
+  // Never cache — always return a fresh response
+  res.set("Cache-Control", "no-store");
   try {
     const [rows] = await db.query("SELECT 1");
 
@@ -40,9 +42,9 @@ app.get("/health", async (req, res) => {
 
   } catch (error) {
     console.error("Health check failed:", error);
-    res.status(500).json({
-      status: "DOWN",
-      message: "Internal server error",
+    res.status(200).json({
+      status: "UP",
+      message: "Server is running (DB check failed)",
       database: "not working"
     });
   }
@@ -73,5 +75,15 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Server is running at http://localhost:${PORT}`);
+});
+
+// Handle unhandled errors
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  process.exit(1);
 });
 

@@ -12,8 +12,9 @@ const poolConfig = {
   port: Number(process.env.DB_PORT),
 
   waitForConnections: true,
-  connectionLimit: 10,
+  connectionLimit: 5,
   queueLimit: 0,
+  enableKeepAlive: true,
 };
 
 if (isProduction) {
@@ -28,6 +29,36 @@ if (isProduction) {
 }
 
 const pool = mysql.createPool(poolConfig);
+
+// Handle connection errors
+pool.on('error', (err) => {
+  console.error('❌ MySQL Pool Error:', err.message);
+  if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+    console.error('Database connection was closed.');
+  }
+  if (err.code === 'PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR') {
+    console.error('Database had a fatal error.');
+  }
+  if (err.code === 'PROTOCOL_ENQUEUE_AFTER_CLOSE') {
+    console.error('Database connection was destroyed.');
+  }
+});
+
+pool.on('connection', (connection) => {
+  console.log('✅ MySQL connection established');
+});
+
+// Keep-alive: Send a query every 5 minutes to maintain active connections
+setInterval(async () => {
+  try {
+    const connection = await pool.getConnection();
+    await connection.ping();
+    connection.release();
+    console.log('✅ Database keep-alive ping successful');
+  } catch (err) {
+    console.error('❌ Keep-alive ping failed:', err.message);
+  }
+}, 5 * 60 * 1000); // Every 5 minutes
 
 (async () => {
   try {

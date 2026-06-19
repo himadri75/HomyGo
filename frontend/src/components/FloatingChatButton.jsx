@@ -407,7 +407,7 @@ const FloatingChatButton = () => {
               aria-label="Open YatriSeva chat"
               style={{ background: "none", border: "none", boxShadow: "none" }}
             >
-              <YatriSevaBotLogo size="lg" />
+              <YatriSevaBotLogo size="lg" animated />
             </MotionButton>
           </div>
         )}
