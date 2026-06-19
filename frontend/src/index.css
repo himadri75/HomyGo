@@ -410,20 +410,30 @@ a:hover, button:hover, .cursor-pointer:hover, [role="button"]:hover {
 }
 
 /* ===== Bot Logo Eye Blink ===== */
+@keyframes botLogoFloat {
+  0%,100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
 @keyframes botLogoEyelidClose {
   0% {
     transform: scaleY(0);
   }
-  32% {
+
+  50% {
     transform: scaleY(1);
   }
-  42% {
-    transform: scaleY(1);
-  }
+
   100% {
     transform: scaleY(0);
   }
 }
+
 
 
 
