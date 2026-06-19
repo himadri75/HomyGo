@@ -200,7 +200,7 @@ const Footer = () => {
             fontWeight="900" 
             fontFamily="system-ui, -apple-system, sans-serif" 
             fill="currentColor" 
-            className="text-slate-900/[0.04] dark:text-white/[0.10] tracking-wider uppercase font-black"
+            className="text-slate-900/[0.04] dark:text-white/[0.05] tracking-wider uppercase font-black"
           >
             HomyGo
           </text>
@@ -302,7 +302,7 @@ const Footer = () => {
         </svg>
 
         {/* Floating Pill bar overlayed at the bottom of the landscape */}
-        <div className="absolute bottom-12 md:bottom-16 left-0 right-0 w-full px-6 z-20">
+        <div className="absolute bottom-12 md:bottom-16 left-0 right-0 w-full px- z-20">
           <div className={`max-w-7xl mx-auto px-8 py-4 rounded-2xl border shadow-lg flex flex-col md:flex-row justify-between items-center gap-4 transition-all duration-300 ${
             darkmode 
               ? 'bg-slate-900/90 border-slate-800/80 text-slate-400 shadow-slate-950/40 backdrop-blur-md' 
