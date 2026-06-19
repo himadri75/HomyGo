@@ -685,12 +685,12 @@ const YatriSevaChatPanel = ({
         <header className="flex items-center justify-between gap-4 border-b border-blue-950/[0.06] bg-white/56 px-5 py-4 backdrop-blur-xl dark:border-white/[0.08] dark:bg-white/[0.03] sm:px-6">
           <div
             className={`flex min-w-0 flex-1 items-center gap-3 ${
-              onDragHandlePointerDown
+              onDragHandlePointerDown && !isMaximized
                 ? "cursor-grab touch-none select-none active:cursor-grabbing"
                 : ""
             }`}
-            onPointerDown={onDragHandlePointerDown}
-            title={onDragHandlePointerDown ? "Drag to move chat" : undefined}
+            onPointerDown={isMaximized ? undefined : onDragHandlePointerDown}
+            title={onDragHandlePointerDown && !isMaximized ? "Drag to move chat" : undefined}
           >
             <YatriSevaBotLogo size="md" />
             <div className="min-w-0">
@@ -698,7 +698,7 @@ const YatriSevaChatPanel = ({
                 YatriSeva
               </p>
               <p className="text-xs font-medium text-slate-500 dark:text-blue-100/70">
-                {onDragHandlePointerDown ? "Drag header to move" : "HomyGo AI travel concierge"}
+                {onDragHandlePointerDown && !isMaximized ? "Drag header to move" : "HomyGo AI travel concierge"}
               </p>
             </div>
           </div>
@@ -754,7 +754,7 @@ const YatriSevaChatPanel = ({
         </header>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5 sm:px-6">
-          <div className="space-y-5">
+          <div className={`mx-auto w-full space-y-5 ${useExpandedLayout ? "max-w-5xl" : ""}`}>
             {messages.map((message) => {
               const assistantContent =
                 !message.isWelcome && message.role === "assistant"
@@ -842,15 +842,15 @@ const YatriSevaChatPanel = ({
                   ) : null}
 
                   {!message.isWelcome ? (
-                    <div className={message.role === "user" ? "max-w-[82%]" : "min-w-0 flex-1 max-w-[92%]"}>
+                    <div className={message.role === "user" ? "w-full max-w-[82%]" : "min-w-0 flex-1 max-w-[92%]"}>
                       {message.role === "user" ? (
-                        <div className="rounded-[1.35rem] rounded-br-md bg-[#3F7FD6] px-4 py-3 text-sm leading-6 text-white shadow-[0_12px_28px_rgba(63,127,214,0.18)] dark:bg-[#6EA8FF] dark:text-[#071327]">
+                        <div className="w-fit ml-auto rounded-[1.35rem] rounded-br-md bg-[#3F7FD6] px-4 py-3 text-sm leading-6 text-white shadow-[0_12px_28px_rgba(63,127,214,0.18)] dark:bg-[#6EA8FF] dark:text-[#071327]">
                           {message.content}
                         </div>
                       ) : assistantContent?.isStructured ? (
                         <div className="py-0.5">{assistantContent.node}</div>
                       ) : (
-                        <div className="rounded-[1.35rem] rounded-bl-md border border-cyan-300/35 bg-cyan-50/70 px-4 py-3 text-sm leading-6 text-slate-700 shadow-sm backdrop-blur-xl dark:border-cyan-300/20 dark:bg-cyan-300/[0.08] dark:text-[#E7F3FF]">
+                        <div className="w-fit rounded-[1.35rem] rounded-bl-md border border-cyan-300/35 bg-cyan-50/70 px-4 py-3 text-sm leading-6 text-slate-700 shadow-sm backdrop-blur-xl dark:border-cyan-300/20 dark:bg-cyan-300/[0.08] dark:text-[#E7F3FF]">
                           {assistantContent?.node}
                         </div>
                       )}
@@ -890,7 +890,7 @@ const YatriSevaChatPanel = ({
               event.preventDefault();
               sendMessage();
             }}
-            className="rounded-[1.6rem] border border-blue-950/[0.08] bg-white p-2 shadow-[0_18px_45px_rgba(37,99,235,0.14)] transition focus-within:border-blue-400/70 dark:border-white/[0.1] dark:bg-[#0E1B34]"
+            className={`mx-auto w-full rounded-[1.6rem] border border-blue-950/[0.08] bg-white p-2 shadow-[0_18px_45px_rgba(37,99,235,0.14)] transition focus-within:border-blue-400/70 dark:border-white/[0.1] dark:bg-[#0E1B34] ${useExpandedLayout ? "max-w-5xl" : ""}`}
           >
             <div className="flex items-center gap-1.5">
               <input

@@ -120,9 +120,18 @@ const FloatingChatButton = () => {
     );
   }, [compactDimensions, compactPosition, contentViewport, getDefaultCompactPosition]);
 
-  const activeDimensions = isMaximized ? maximizedDimensions : compactDimensions;
+  const activeDimensions = isMaximized
+    ? {
+        width: viewport.width < 640 ? viewport.width : maximizedDimensions.width,
+        height: viewport.width < 640 ? viewport.height : maximizedDimensions.height,
+      }
+    : compactDimensions;
+
   const activePosition = isMaximized
-    ? { left: expandedMargin, top: expandedMargin }
+    ? {
+        left: viewport.width < 640 ? 0 : expandedMargin,
+        top: viewport.width < 640 ? 0 : expandedMargin,
+      }
     : frozenCompactPositionRef.current ?? resolvedCompactPosition;
 
   useEffect(() => {
@@ -130,6 +139,17 @@ const FloatingChatButton = () => {
       frozenCompactPositionRef.current = null;
     }
   }, [isMaximized]);
+
+  useEffect(() => {
+    if (isOpen && isMaximized) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, isMaximized]);
 
   useEffect(() => {
     const handleResize = () => setViewport(getViewportSize());
@@ -222,7 +242,7 @@ const FloatingChatButton = () => {
           <div
             ref={constraintsRef}
             key="chat-anchor"
-            style={{ padding: VIEWPORT_MARGIN }}
+            style={{ padding: isMaximized && viewport.width < 640 ? 0 : VIEWPORT_MARGIN }}
             className="pointer-events-none fixed inset-0 z-[70] overflow-hidden"
           >
             <MotionDiv
@@ -256,7 +276,7 @@ const FloatingChatButton = () => {
             >
               <div
                 className={`h-full w-full overflow-hidden ${isMaximized
-                    ? "rounded-[28px] shadow-[0_22px_58px_rgba(15,23,42,0.20)]"
+                    ? "sm:rounded-[28px] rounded-none shadow-[0_22px_58px_rgba(15,23,42,0.20)]"
                     : "rounded-[32px] shadow-[0_18px_44px_rgba(37,99,235,0.16)]"
                   }`}
               >
