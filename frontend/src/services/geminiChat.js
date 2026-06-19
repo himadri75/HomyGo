@@ -1,8 +1,10 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({
-  apiKey: import.meta.env.VITE_GEMINI_API_KEY,
-});
+const getGeminiClient = () => {
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+  if (!apiKey) return null;
+  return new GoogleGenAI({ apiKey });
+};
 
 // ─── Conversation history (multi-turn memory) ─────────────────────────────────
 // Each entry: { role: "user" | "model", parts: [{ text: string }] }
@@ -212,6 +214,11 @@ TONE & BEHAVIOUR
  */
 export const sendChatMessage = async (userMessage) => {
   try {
+    const ai = getGeminiClient();
+    if (!ai) {
+      throw new Error("Invalid Gemini API key. Please update VITE_GEMINI_API_KEY in your frontend .env file with a valid key from aistudio.google.com.");
+    }
+
     // Append user message to history
     conversationHistory.push({
       role: "user",
