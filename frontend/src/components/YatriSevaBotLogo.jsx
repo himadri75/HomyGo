@@ -3,6 +3,23 @@ import { useEffect, useState } from "react";
 const BLINK_DURATION_MS = 200;
 const blinkMotion = `botLogoEyelidClose ${BLINK_DURATION_MS}ms cubic-bezier(0.4, 0, 0.2, 1) forwards`;
 
+// Inject the keyframe into <head> once so it survives production CSS purging.
+// Inline style `animation` props cannot reference @keyframes from external
+// stylesheets when those keyframes are stripped by the build tool (Tailwind v4).
+const KEYFRAME_ID = "bot-logo-eyelid-keyframe";
+if (typeof document !== "undefined" && !document.getElementById(KEYFRAME_ID)) {
+  const style = document.createElement("style");
+  style.id = KEYFRAME_ID;
+  style.textContent = `
+    @keyframes botLogoEyelidClose {
+      0%   { transform: scaleY(0); }
+      50%  { transform: scaleY(1); }
+      100% { transform: scaleY(0); }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
 const sizeClasses = {
   sm: {
     shell: "h-10 w-10",
