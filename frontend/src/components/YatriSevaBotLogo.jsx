@@ -1,50 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 
-const BLINK_DURATION_MS = 200;
-
-// ─── Inject @keyframes into <head> once (survives Tailwind v4 CSS purging) ────
-// We use a data attribute instead of getElementById to stay CSP-safe with
-// nonce-based policies that GitHub Pages might enforce.
-const KEYFRAME_ATTR = "data-bot-eyelid-kf";
-if (
-  typeof document !== "undefined" &&
-  !document.querySelector(`style[${KEYFRAME_ATTR}]`)
-) {
-  const style = document.createElement("style");
-  style.setAttribute(KEYFRAME_ATTR, "1");
-  style.textContent = [
-    "@keyframes botEyelidClose{",
-    "0%{transform:scaleY(0)}",
-    "50%{transform:scaleY(1)}",
-    "100%{transform:scaleY(0)}",
-    "}",
-  ].join("");
-  document.head.appendChild(style);
-}
-
-const BLINK_MOTION = `botEyelidClose ${BLINK_DURATION_MS}ms cubic-bezier(0.4,0,0.2,1) forwards`;
+// ─── Constants ────────────────────────────────────────────────────────────────
+const BLINK_DOWN_MS = 80;   // lid closes
+const BLINK_HOLD_MS = 40;   // lid stays closed
+const BLINK_UP_MS   = 80;   // lid opens
 
 // ─── Size tokens ──────────────────────────────────────────────────────────────
 const sizeClasses = {
   sm: {
     shell: "h-10 w-10",
-    head: "h-7 w-8 rounded-[0.9rem]",
-    face: "h-5 w-6 rounded-[0.65rem]",
-    eye: "h-1.5 w-1.5",
+    head:  "h-7 w-8 rounded-[0.9rem]",
+    face:  "h-5 w-6 rounded-[0.65rem]",
+    eye:   "h-1.5 w-1.5",
     smile: "h-2 w-3.5",
   },
   md: {
     shell: "h-12 w-12",
-    head: "h-8 w-10 rounded-[1.05rem]",
-    face: "h-6 w-8 rounded-[0.8rem]",
-    eye: "h-2 w-2",
+    head:  "h-8 w-10 rounded-[1.05rem]",
+    face:  "h-6 w-8 rounded-[0.8rem]",
+    eye:   "h-2 w-2",
     smile: "h-2.5 w-4",
   },
   lg: {
     shell: "h-14 w-14",
-    head: "h-10 w-12 rounded-[1.25rem]",
-    face: "h-7 w-10 rounded-[0.95rem]",
-    eye: "h-2.5 w-2.5",
+    head:  "h-10 w-12 rounded-[1.25rem]",
+    face:  "h-7 w-10 rounded-[0.95rem]",
+    eye:   "h-2.5 w-2.5",
     smile: "h-3 w-5",
   },
 };
@@ -53,11 +34,9 @@ const eyeBaseClasses =
   "relative block rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.95),0_0_14px_rgba(59,130,246,0.8)]";
 
 // ─── BotEye ───────────────────────────────────────────────────────────────────
-// KEY FIX: The `key` prop must be on THIS component from the parent, not on an
-// inner element. When blinkTick changes, the parent passes a new key, which
-// forces React to fully unmount + remount BotEye — creating a fresh DOM node so
-// the CSS animation plays from scratch each blink cycle.
-const BotEye = ({ side, animated, eyeClass, delay }) => {
+// Uses CSS `transition` (no @keyframes needed) so it works in every environment.
+// `lidScale`: 0 = open, 1 = closed.
+const BotEye = ({ side, animated, lidScale, eyeClass }) => {
   const position = side === "left" ? "left-[18%]" : "right-[18%]";
 
   if (!animated) {
@@ -68,17 +47,25 @@ const BotEye = ({ side, animated, eyeClass, delay }) => {
     );
   }
 
+  // Lid transition duration depends on whether closing or opening
+  const transitionMs = lidScale > 0 ? BLINK_DOWN_MS : BLINK_UP_MS;
+
   return (
     <span className={`absolute ${position} top-[31%] overflow-hidden rounded-full ${eyeClass}`}>
-      {/* The glowing pupil */}
+      {/* glowing pupil */}
       <span className={`${eyeBaseClasses} h-full w-full`} />
-      {/* The eyelid — animates on every fresh mount */}
+      {/* eyelid — driven by lidScale prop, CSS transition handles the animation */}
       <span
         style={{
-          animation: BLINK_MOTION,
-          animationDelay: delay,
+          position: "absolute",
+          inset: 0,
+          borderRadius: "9999px",
+          backgroundColor: "#0b1220",
+          transformOrigin: "top center",
+          transform: `scaleY(${lidScale})`,
+          transition: `transform ${transitionMs}ms ease-in-out`,
+          pointerEvents: "none",
         }}
-        className="pointer-events-none absolute inset-0 origin-top rounded-full bg-[#0b1220]"
       />
     </span>
   );
@@ -87,47 +74,62 @@ const BotEye = ({ side, animated, eyeClass, delay }) => {
 // ─── Main Logo ────────────────────────────────────────────────────────────────
 const YatriSevaBotLogo = ({ size = "md", className = "", animated = false }) => {
   const classes = sizeClasses[size] || sizeClasses.md;
-  const [blinkTick, setBlinkTick] = useState(0);
+
+  // lidScale: 0 = eye open, 1 = eye fully closed
+  const [lidScale, setLidScale] = useState(0);
   const cancelledRef = useRef(false);
 
   useEffect(() => {
     if (!animated) return undefined;
 
     cancelledRef.current = false;
-    let blinkTimeout;
-    let doubleBlinkTimeout;
 
-    const scheduleNextBlink = () => {
-      // Natural human blink rhythm: every 2–6 seconds
+    let t1, t2, t3;
+
+    /**
+     * One full blink cycle:
+     *   1. Set lid to 1 (closes — transition plays over BLINK_DOWN_MS)
+     *   2. After DOWN + HOLD, set lid to 0 (opens — transition plays over BLINK_UP_MS)
+     *   3. After everything settles, schedule the next blink
+     */
+    const doBlink = () => {
+      if (cancelledRef.current) return;
+
+      // Close the lid
+      setLidScale(1);
+
+      // Open the lid after close + hold
+      t2 = setTimeout(() => {
+        if (cancelledRef.current) return;
+        setLidScale(0);
+      }, BLINK_DOWN_MS + BLINK_HOLD_MS);
+
+      // Schedule next blink after full cycle + random pause (2-6 s)
       const pause = 2200 + Math.random() * 3800;
-      blinkTimeout = setTimeout(() => {
+      t3 = setTimeout(() => {
         if (cancelledRef.current) return;
 
-        setBlinkTick((t) => t + 1);
+        doBlink();
 
-        // ~18% chance of a double-blink
+        // ~18% chance of a quick double blink
         if (Math.random() < 0.18) {
-          doubleBlinkTimeout = setTimeout(() => {
-            if (!cancelledRef.current) setBlinkTick((t) => t + 1);
-          }, 280);
+          const total = BLINK_DOWN_MS + BLINK_HOLD_MS + BLINK_UP_MS;
+          setTimeout(() => {
+            if (!cancelledRef.current) doBlink();
+          }, total + 280);
         }
-
-        scheduleNextBlink();
-      }, pause);
+      }, BLINK_DOWN_MS + BLINK_HOLD_MS + BLINK_UP_MS + pause);
     };
 
     // First blink after 1 second so it feels alive immediately
-    blinkTimeout = setTimeout(() => {
-      if (!cancelledRef.current) {
-        setBlinkTick((t) => t + 1);
-        scheduleNextBlink();
-      }
-    }, 1000);
+    t1 = setTimeout(doBlink, 1000);
 
     return () => {
       cancelledRef.current = true;
-      clearTimeout(blinkTimeout);
-      clearTimeout(doubleBlinkTimeout);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      setLidScale(0);
     };
   }, [animated]);
 
@@ -152,20 +154,17 @@ const YatriSevaBotLogo = ({ size = "md", className = "", animated = false }) => 
         >
           <span className="absolute inset-x-1 top-0 h-1 rounded-b-full bg-white/25" />
 
-          {/* KEY FIX: key is on BotEye itself, so blinkTick forces a full unmount+remount */}
           <BotEye
-            key={`left-${blinkTick}`}
             side="left"
             animated={animated}
+            lidScale={lidScale}
             eyeClass={classes.eye}
-            delay={undefined}
           />
           <BotEye
-            key={`right-${blinkTick}`}
             side="right"
             animated={animated}
+            lidScale={lidScale}
             eyeClass={classes.eye}
-            delay="14ms"
           />
 
           <span
