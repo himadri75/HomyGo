@@ -1,25 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const BLINK_DURATION_MS = 200;
-const blinkMotion = `botLogoEyelidClose ${BLINK_DURATION_MS}ms cubic-bezier(0.4, 0, 0.2, 1) forwards`;
 
-// Inject the keyframe into <head> once so it survives production CSS purging.
-// Inline style `animation` props cannot reference @keyframes from external
-// stylesheets when those keyframes are stripped by the build tool (Tailwind v4).
-const KEYFRAME_ID = "bot-logo-eyelid-keyframe";
-if (typeof document !== "undefined" && !document.getElementById(KEYFRAME_ID)) {
+// ─── Inject @keyframes into <head> once (survives Tailwind v4 CSS purging) ────
+// We use a data attribute instead of getElementById to stay CSP-safe with
+// nonce-based policies that GitHub Pages might enforce.
+const KEYFRAME_ATTR = "data-bot-eyelid-kf";
+if (
+  typeof document !== "undefined" &&
+  !document.querySelector(`style[${KEYFRAME_ATTR}]`)
+) {
   const style = document.createElement("style");
-  style.id = KEYFRAME_ID;
-  style.textContent = `
-    @keyframes botLogoEyelidClose {
-      0%   { transform: scaleY(0); }
-      50%  { transform: scaleY(1); }
-      100% { transform: scaleY(0); }
-    }
-  `;
+  style.setAttribute(KEYFRAME_ATTR, "1");
+  style.textContent = [
+    "@keyframes botEyelidClose{",
+    "0%{transform:scaleY(0)}",
+    "50%{transform:scaleY(1)}",
+    "100%{transform:scaleY(0)}",
+    "}",
+  ].join("");
   document.head.appendChild(style);
 }
 
+const BLINK_MOTION = `botEyelidClose ${BLINK_DURATION_MS}ms cubic-bezier(0.4,0,0.2,1) forwards`;
+
+// ─── Size tokens ──────────────────────────────────────────────────────────────
 const sizeClasses = {
   sm: {
     shell: "h-10 w-10",
@@ -44,88 +49,83 @@ const sizeClasses = {
   },
 };
 
-const eyeClasses =
+const eyeBaseClasses =
   "relative block rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.95),0_0_14px_rgba(59,130,246,0.8)]";
 
-const BotEye = ({ side, animated, blinkTick, eyeClass }) => {
+// ─── BotEye ───────────────────────────────────────────────────────────────────
+// KEY FIX: The `key` prop must be on THIS component from the parent, not on an
+// inner element. When blinkTick changes, the parent passes a new key, which
+// forces React to fully unmount + remount BotEye — creating a fresh DOM node so
+// the CSS animation plays from scratch each blink cycle.
+const BotEye = ({ side, animated, eyeClass, delay }) => {
   const position = side === "left" ? "left-[18%]" : "right-[18%]";
-  const animationDelay = side === "right" ? "14ms" : undefined;
 
   if (!animated) {
     return (
       <span className={`absolute ${position} top-[31%] flex items-center justify-center`}>
-        <span className={`${eyeClasses} ${eyeClass}`} />
+        <span className={`${eyeBaseClasses} ${eyeClass}`} />
       </span>
     );
   }
 
   return (
-    <span
-      className={`absolute ${position} top-[31%] overflow-hidden rounded-full ${eyeClass}`}
-    >
-      <span className={`${eyeClasses} h-full w-full`} />
+    <span className={`absolute ${position} top-[31%] overflow-hidden rounded-full ${eyeClass}`}>
+      {/* The glowing pupil */}
+      <span className={`${eyeBaseClasses} h-full w-full`} />
+      {/* The eyelid — animates on every fresh mount */}
       <span
-        key={`${side}-lid-${blinkTick}`}
-        style={{ animation: blinkMotion, animationDelay }}
+        style={{
+          animation: BLINK_MOTION,
+          animationDelay: delay,
+        }}
         className="pointer-events-none absolute inset-0 origin-top rounded-full bg-[#0b1220]"
       />
     </span>
   );
 };
 
+// ─── Main Logo ────────────────────────────────────────────────────────────────
 const YatriSevaBotLogo = ({ size = "md", className = "", animated = false }) => {
   const classes = sizeClasses[size] || sizeClasses.md;
   const [blinkTick, setBlinkTick] = useState(0);
+  const cancelledRef = useRef(false);
 
   useEffect(() => {
     if (!animated) return undefined;
 
-    let cancelled = false;
+    cancelledRef.current = false;
     let blinkTimeout;
     let doubleBlinkTimeout;
 
-    // const scheduleNextBlink = () => {
-    //   const pause = 2200 + Math.random() * 3800;
-    //   blinkTimeout = setTimeout(() => {
-    //     if (cancelled) return;
+    const scheduleNextBlink = () => {
+      // Natural human blink rhythm: every 2–6 seconds
+      const pause = 2200 + Math.random() * 3800;
+      blinkTimeout = setTimeout(() => {
+        if (cancelledRef.current) return;
 
-    //     setBlinkTick((tick) => tick + 1);
+        setBlinkTick((t) => t + 1);
 
-    //     if (Math.random() < 0.18) {
-    //       doubleBlinkTimeout = setTimeout(() => {
-    //         if (!cancelled) setBlinkTick((tick) => tick + 1);
-    //       }, 280);
-    //     }
+        // ~18% chance of a double-blink
+        if (Math.random() < 0.18) {
+          doubleBlinkTimeout = setTimeout(() => {
+            if (!cancelledRef.current) setBlinkTick((t) => t + 1);
+          }, 280);
+        }
 
-    //     scheduleNextBlink();
-    //   }, pause);
-    // };
-      const scheduleNextBlink = () => {
+        scheduleNextBlink();
+      }, pause);
+    };
+
+    // First blink after 1 second so it feels alive immediately
     blinkTimeout = setTimeout(() => {
-      if (cancelled) return;
-
-      setBlinkTick((tick) => tick + 1);
-
-      // Optional double blink
-      if (Math.random() < 0.18) {
-        doubleBlinkTimeout = setTimeout(() => {
-          if (!cancelled) setBlinkTick((tick) => tick + 1);
-        }, 280);
-      }
-
-      scheduleNextBlink();
-    }, 1000); // blink every 1 second
-  };
-    const initialDelay = 1000;
-    blinkTimeout = setTimeout(() => {
-      if (!cancelled) {
-        setBlinkTick((tick) => tick + 1);
+      if (!cancelledRef.current) {
+        setBlinkTick((t) => t + 1);
         scheduleNextBlink();
       }
-    }, initialDelay);
+    }, 1000);
 
     return () => {
-      cancelled = true;
+      cancelledRef.current = true;
       clearTimeout(blinkTimeout);
       clearTimeout(doubleBlinkTimeout);
     };
@@ -151,18 +151,23 @@ const YatriSevaBotLogo = ({ size = "md", className = "", animated = false }) => 
           className={`relative overflow-hidden border border-slate-950/70 bg-[radial-gradient(circle_at_32%_18%,rgba(148,163,184,0.3),transparent_22%),linear-gradient(145deg,#111827_0%,#020617_62%,#172033_100%)] shadow-[inset_0_2px_5px_rgba(255,255,255,0.12),0_4px_8px_rgba(15,23,42,0.16)] ${classes.face}`}
         >
           <span className="absolute inset-x-1 top-0 h-1 rounded-b-full bg-white/25" />
+
+          {/* KEY FIX: key is on BotEye itself, so blinkTick forces a full unmount+remount */}
           <BotEye
+            key={`left-${blinkTick}`}
             side="left"
             animated={animated}
-            blinkTick={blinkTick}
             eyeClass={classes.eye}
+            delay={undefined}
           />
           <BotEye
+            key={`right-${blinkTick}`}
             side="right"
             animated={animated}
-            blinkTick={blinkTick}
             eyeClass={classes.eye}
+            delay="14ms"
           />
+
           <span
             className={`absolute left-1/2 top-[58%] -translate-x-1/2 rounded-b-full border-b-2 border-cyan-300 shadow-[0_4px_8px_rgba(34,211,238,0.7)] ${classes.smile}`}
           />
