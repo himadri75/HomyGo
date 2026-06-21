@@ -411,29 +411,35 @@ a:hover, button:hover, .cursor-pointer:hover, [role="button"]:hover {
 
 /* ===== Bot Logo Eye Blink ===== */
 @keyframes botLogoFloat {
-  0%,100% {
-    transform: translateY(0px);
-  }
-
-  50% {
-    transform: translateY(-1.5px);
-  }
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-1.5px); }
 }
 
-@keyframes botLogoEyelidClose {
-  0% {
-    transform: scaleY(0);
-  }
-
-  50% {
-    transform: scaleY(1);
-  }
-
-  100% {
-    transform: scaleY(0);
-  }
+/*
+  Full 6-second blink cycle:
+  0  – 66%  : eye open          (0 – 3.96s)
+  67% – 68% : lid closes        (4.02 – 4.08s)
+  68% – 70% : lid held closed   (4.08 – 4.20s)
+  70% – 71% : lid opens         (4.20 – 4.26s)
+  71% – 76% : open pause        (4.26 – 4.56s)
+  76% – 77% : double-blink close
+  77% – 79% : double-blink hold
+  79% – 80% : double-blink open
+  80% – 100%: eye open until next cycle
+*/
+@keyframes bot-blink {
+  0%,  66%  { transform: scaleY(0); }
+  68%       { transform: scaleY(1); }
+  70%       { transform: scaleY(1); }
+  72%       { transform: scaleY(0); }
+  75%       { transform: scaleY(0); }
+  77%       { transform: scaleY(1); }
+  79%       { transform: scaleY(1); }
+  81%       { transform: scaleY(0); }
+  100%      { transform: scaleY(0); }
 }
 
-
-
-
+.bot-lid-animated {
+  transform-origin: top center;
+  animation: bot-blink 6s linear infinite;
+}
