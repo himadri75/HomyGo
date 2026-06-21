@@ -1,10 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-
-// ─── Constants ────────────────────────────────────────────────────────────────
-const BLINK_DOWN_MS = 80;   // lid closes
-const BLINK_HOLD_MS = 40;   // lid stays closed
-const BLINK_UP_MS   = 80;   // lid opens
-
 // ─── Size tokens ──────────────────────────────────────────────────────────────
 const sizeClasses = {
   sm: {
@@ -34,9 +27,9 @@ const eyeBaseClasses =
   "relative block rounded-full bg-cyan-300 shadow-[0_0_8px_rgba(34,211,238,0.95),0_0_14px_rgba(59,130,246,0.8)]";
 
 // ─── BotEye ───────────────────────────────────────────────────────────────────
-// Uses CSS `transition` (no @keyframes needed) so it works in every environment.
-// `lidScale`: 0 = open, 1 = closed.
-const BotEye = ({ side, animated, lidScale, eyeClass }) => {
+// Uses the CSS class `bot-lid-animated` (defined in index.css) for the blink.
+// No JavaScript timers — pure CSS @keyframes drives the animation.
+const BotEye = ({ side, animated, eyeClass }) => {
   const position = side === "left" ? "left-[18%]" : "right-[18%]";
 
   if (!animated) {
@@ -47,23 +40,18 @@ const BotEye = ({ side, animated, lidScale, eyeClass }) => {
     );
   }
 
-  // Lid transition duration depends on whether closing or opening
-  const transitionMs = lidScale > 0 ? BLINK_DOWN_MS : BLINK_UP_MS;
-
   return (
     <span className={`absolute ${position} top-[31%] overflow-hidden rounded-full ${eyeClass}`}>
       {/* glowing pupil */}
       <span className={`${eyeBaseClasses} h-full w-full`} />
-      {/* eyelid — driven by lidScale prop, CSS transition handles the animation */}
+      {/* eyelid — driven entirely by CSS animation in index.css (.bot-lid-animated) */}
       <span
+        className="bot-lid-animated"
         style={{
           position: "absolute",
           inset: 0,
           borderRadius: "9999px",
           backgroundColor: "#0b1220",
-          transformOrigin: "top center",
-          transform: `scaleY(${lidScale})`,
-          transition: `transform ${transitionMs}ms ease-in-out`,
           pointerEvents: "none",
         }}
       />
@@ -74,64 +62,6 @@ const BotEye = ({ side, animated, lidScale, eyeClass }) => {
 // ─── Main Logo ────────────────────────────────────────────────────────────────
 const YatriSevaBotLogo = ({ size = "md", className = "", animated = false }) => {
   const classes = sizeClasses[size] || sizeClasses.md;
-
-  // lidScale: 0 = eye open, 1 = eye fully closed
-  const [lidScale, setLidScale] = useState(0);
-  const cancelledRef = useRef(false);
-
-  useEffect(() => {
-    if (!animated) return undefined;
-
-    cancelledRef.current = false;
-
-    let t1, t2, t3;
-
-    /**
-     * One full blink cycle:
-     *   1. Set lid to 1 (closes — transition plays over BLINK_DOWN_MS)
-     *   2. After DOWN + HOLD, set lid to 0 (opens — transition plays over BLINK_UP_MS)
-     *   3. After everything settles, schedule the next blink
-     */
-    const doBlink = () => {
-      if (cancelledRef.current) return;
-
-      // Close the lid
-      setLidScale(1);
-
-      // Open the lid after close + hold
-      t2 = setTimeout(() => {
-        if (cancelledRef.current) return;
-        setLidScale(0);
-      }, BLINK_DOWN_MS + BLINK_HOLD_MS);
-
-      // Schedule next blink after full cycle + random pause (2-6 s)
-      const pause = 2200 + Math.random() * 3800;
-      t3 = setTimeout(() => {
-        if (cancelledRef.current) return;
-
-        doBlink();
-
-        // ~18% chance of a quick double blink
-        if (Math.random() < 0.18) {
-          const total = BLINK_DOWN_MS + BLINK_HOLD_MS + BLINK_UP_MS;
-          setTimeout(() => {
-            if (!cancelledRef.current) doBlink();
-          }, total + 280);
-        }
-      }, BLINK_DOWN_MS + BLINK_HOLD_MS + BLINK_UP_MS + pause);
-    };
-
-    // First blink after 1 second so it feels alive immediately
-    t1 = setTimeout(doBlink, 1000);
-
-    return () => {
-      cancelledRef.current = true;
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      setLidScale(0);
-    };
-  }, [animated]);
 
   return (
     <span
@@ -154,18 +84,8 @@ const YatriSevaBotLogo = ({ size = "md", className = "", animated = false }) => 
         >
           <span className="absolute inset-x-1 top-0 h-1 rounded-b-full bg-white/25" />
 
-          <BotEye
-            side="left"
-            animated={animated}
-            lidScale={lidScale}
-            eyeClass={classes.eye}
-          />
-          <BotEye
-            side="right"
-            animated={animated}
-            lidScale={lidScale}
-            eyeClass={classes.eye}
-          />
+          <BotEye side="left"  animated={animated} eyeClass={classes.eye} />
+          <BotEye side="right" animated={animated} eyeClass={classes.eye} />
 
           <span
             className={`absolute left-1/2 top-[58%] -translate-x-1/2 rounded-b-full border-b-2 border-cyan-300 shadow-[0_4px_8px_rgba(34,211,238,0.7)] ${classes.smile}`}
