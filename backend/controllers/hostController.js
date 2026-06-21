@@ -1,6 +1,189 @@
 const db = require("../config/db");
 const upload = require("../config/multer");
-const axios = require("axios")
+const axios = require("axios");
+const { sendOTPVerificationMail } = require("../service/mailService");
+
+const sendVerificationOtp = async (req, res) => {
+  const { id } = req.body;
+
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      message: "Host ID is required",
+    });
+  }
+
+  try {
+    // Get host email from database
+    const [hosts] = await db.query(
+      "SELECT email FROM hosts WHERE id = ?",
+      [id]
+    );
+
+    if (hosts.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Host not found",
+      });
+    }
+
+    const email = hosts[0].email;
+
+    // Generate 6 digit OTP
+    const otp = Math.floor(Math.random() * 1000000)
+      .toString()
+      .padStart(6, "0");
+
+    // Save OTP
+    const [result] = await db.query(
+      "UPDATE hosts SET verification_otp = ? WHERE id = ?",
+      [otp, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "OTP update failed",
+      });
+    }
+
+    console.log("EMAIL TYPE", email, typeof email);
+
+    // Send OTP email
+    const mailSent = await sendOTPVerificationMail(
+      email,
+      otp
+    );
+
+    if (!mailSent) {
+      return res.status(500).json({
+        success: false,
+        message: "OTP generated but email sending failed",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Verification OTP sent successfully",
+    });
+
+
+  } catch (error) {
+    console.error("❌ Send Verification OTP Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+const verifyHostDetails = async (req, res) => {
+  const {
+    id,
+    type,
+    aadhaar,
+    pan,
+    bank_name,
+    account_no,
+    ifsc,
+    otp,
+  } = req.body;
+
+
+  if (
+    !id ||
+    !type ||
+    !aadhaar ||
+    !pan ||
+    !bank_name ||
+    !account_no ||
+    !ifsc ||
+    !otp
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required",
+    });
+  }
+
+
+  try {
+
+    // Check stored OTP
+    const [host] = await db.query(
+      "SELECT verification_otp FROM hosts WHERE id = ?",
+      [id]
+    );
+
+    if (host.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Host not found",
+      });
+    }
+
+    const verification_otp = host[0].verification_otp;
+
+    if (String(verification_otp) !== String(otp)) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid OTP",
+      });
+    }
+
+    // Update host verification details
+    const [updateResult] = await db.query(
+      `
+      UPDATE hosts
+      SET 
+        host_type = ?,
+        aadhaar_number = ?,
+        pan_card = ?,
+        bank_name = ?,
+        account_no = ?,
+        ifsc_code = ?,
+        verification_otp = NULL,
+        is_verified = TRUE
+      WHERE id = ?
+      `,
+      [
+        type,
+        aadhaar,
+        pan,
+        bank_name,
+        account_no,
+        ifsc,
+        id
+      ]
+    );
+
+    if (updateResult.affectedRows === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Host details update failed",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Host verified successfully",
+    });
+
+  } catch (error) {
+
+    console.error(
+      "❌ Host details verification error:",
+      error
+    );
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+
+  }
+};
 
 const addNewHomestay = async (req, res) => {
   try {
@@ -150,4 +333,5 @@ const addNewHomestay = async (req, res) => {
   }
 };
 
-module.exports = { addNewHomestay };
+module.exports = { sendVerificationOtp, verifyHostDetails, addNewHomestay };
+

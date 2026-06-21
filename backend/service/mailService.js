@@ -290,8 +290,85 @@ const sendEmergencySOSMail = async (
   }
 };
 
+const sendOTPVerificationMail = async (email, verification_otp) => {
+  console.log("OTP EMAIL:", email);
+  console.log("OTP EMAIL TYPE:", typeof email);
+
+  try {
+    const mailOptions = {
+      from: `"Homygo Verification" <support@homygo.apps24.tech>`,
+      to: email,
+      subject: "🔐 Verify Your Email Address",
+
+      html: `
+        <div style="font-family: Arial, sans-serif; padding: 16px;">
+
+          ${getBanner()}
+
+          <h2 style="color: #3498db;">
+            Email Verification Required
+          </h2>
+
+          <p>
+            Thank you for choosing <strong>Homygo</strong>.
+          </p>
+
+          <p>
+            Use the following One-Time Password (OTP) to verify your email address:
+          </p>
+
+          <div
+            style="
+              margin: 24px 0;
+              text-align: center;
+            "
+          >
+            <span
+              style="
+                display: inline-block;
+                font-size: 32px;
+                font-weight: bold;
+                letter-spacing: 8px;
+                color: #2c3e50;
+                background: #f4f6f8;
+                padding: 14px 24px;
+                border-radius: 8px;
+              "
+            >
+              ${verification_otp}
+            </span>
+          </div>
+
+          <p>
+            This OTP is valid for a limited time. Do not share it with anyone.
+          </p>
+
+          <p>
+            Verification Requested At:
+            <strong>${getISTTime()}</strong>
+          </p>
+
+          <hr style="margin: 20px 0;" />
+
+          <p style="font-size: 12px; color: gray;">
+            If you did not request this verification, please ignore this email.
+          </p>
+
+        </div>
+      `,
+    };
+
+    await resend.emails.send(mailOptions);
+    return true;
+  } catch (error) {
+    console.error("❌ Email verification OTP sending failed:", error);
+    return false;
+  }
+};
+
 module.exports = {
   sendAccountCreatedMail,
   sendLoginSuccessMail,
   sendEmergencySOSMail,
+  sendOTPVerificationMail
 };

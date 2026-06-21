@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, HomeIcon, SquarePen, Lock } from "lucide-react";
+import { LayoutDashboard, SquarePen, Lock, User } from "lucide-react";
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-hot-toast";
@@ -9,56 +9,80 @@ const adminNavItems = [
     label: "Dashboard",
     to: "/admin/dashboard",
     icon: LayoutDashboard,
+    disabled: false,
   },
   {
     label: "Manage Homestay",
     to: "/admin/manage-homestay",
     icon: SquarePen,
+    disabled: false,
   },
 ];
 
-const hostNavItems = [
+const hostNavItems = (hostVerification) => [
   {
     label: "Dashboard",
     to: "/host/dashboard",
     icon: LayoutDashboard,
+    disabled: !hostVerification,
   },
   {
     label: "Add Homestay",
     to: "/host/add-homestay",
     icon: SquarePen,
+    disabled: !hostVerification,
+  },
+  {
+
+    label: "Profile",
+    to: "/host/profile",
+    icon: User,
+    disabled: false,
   },
 ];
 
 function Sidebar({ role }) {
-  const { hostVerification } = useContext(AppContext);
-  const navItems = role === "ADMIN" ? adminNavItems : role === "HOST" ? hostNavItems : [];
+  const { hostDetails } = useContext(AppContext);
+
+  const navItems =
+    role === "ADMIN"
+      ? adminNavItems
+      : role === "HOST"
+        ? hostNavItems(hostDetails?.is_verified)
+        : [];
 
   return (
     <aside className="w-full lg:w-64 shrink-0 border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
       <div className="sticky top-0 lg:top-20 p-4">
         <h2 className="mb-6 px-3 text-lg font-semibold text-slate-900 dark:text-white">
-          Admin Panel
+          {role === "ADMIN" ? "Admin" : "Host"} Panel
         </h2>
 
         <nav className="space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isLocked = role === "HOST" && item.to === "/host/add-homestay" && !hostVerification;
 
-            if (isLocked) {
+            if (item.disabled) {
               return (
                 <button
                   key={item.label}
                   type="button"
-                  onClick={() => toast.error("Please complete your verification in the Dashboard to unlock Add Homestay!")}
+                  onClick={() =>
+                    toast.error(
+                      "Please complete your profile!"
+                    )
+                  }
                   className="w-full flex items-center justify-between rounded-xl px-3 py-3 text-sm font-medium transition-colors text-slate-400 dark:text-gray-500 hover:bg-gray-100/50 dark:hover:bg-gray-900/50 cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
                     <Icon size={18} />
                     <span>{item.label}</span>
                   </div>
-                  <Lock size={14} className="text-amber-500 dark:text-amber-600 animate-pulse" />
+
+                  <Lock
+                    size={14}
+                    className="text-amber-500 dark:text-amber-600 animate-pulse"
+                  />
                 </button>
               );
             }

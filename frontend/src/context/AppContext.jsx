@@ -8,6 +8,7 @@ export const AppContext = createContext(null);
 
 const AppContextProvider = ({ children }) => {
   const navigate = useNavigate();
+
   const [darkmode, setDarkmode] = useState(() => {
     return localStorage.getItem('theme') === 'dark';
   });
@@ -15,24 +16,6 @@ const AppContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [adminDetails, setAdminDetails] = useState(null);
   const [hostDetails, setHostDetails] = useState(null);
-  const [hostVerification, setHostVerification] = useState(() => {
-    try {
-      const saved = localStorage.getItem('host_verification');
-      return saved ? JSON.parse(saved) : null;
-    } catch {
-      return null;
-    }
-  });
-
-  const verifyHost = (details) => {
-    localStorage.setItem('host_verification', JSON.stringify(details));
-    setHostVerification(details);
-  };
-
-  const removeHostVerification = () => {
-    localStorage.removeItem('host_verification');
-    setHostVerification(null);
-  };
 
   const [homestays, setHomestays] = useState(null);
   const [categoryHomestays, setCategoryHomestays] = useState(null);
@@ -53,7 +36,11 @@ const AppContextProvider = ({ children }) => {
     culturalFeedsFetching: false,
     adminLogin: false,
     fetchSimilarFeeds: false,
-    fetchSingleFeed: false
+    fetchSingleFeed: false,
+    createHost: false,
+    hostLogin: false,
+    sendHostVerificationOTP: false,
+    verifyHostKycDetails: false
   })
   const [errorMessage, setErrorMessage] = useState({
     homestaysFetching: "",
@@ -149,13 +136,83 @@ const AppContextProvider = ({ children }) => {
     }
   }
 
-  const hostLogin = async (hostId, password) => {
-    if (hostId === "h@gmail.com" && password === "h") {
-      setHostDetails({ host: "host" });
-      toast.success("Login successfull.");
-      navigate("/host/dashboard");
+  const createHost = async (payload) => {
+    setLoading(prev => ({ ...prev, createHost: true }));
+    try {
+      const response = await axiosInstance.post("/api/v1/hosts/auth/register", payload);
+      const data = response?.data;
+
+      if (!data.success) {
+        toast.error(data.message);
+        return;
+      }
+
+      toast.success(data.message);
+      navigate("/host/auth/login");
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to create account.");
+    } finally {
+      setLoading(prev => ({ ...prev, createHost: false }));
     }
   }
+
+  const hostLogin = async (email, password) => {
+    setLoading(prev => ({ ...prev, hostLogin: true }));
+    try {
+      const response = await axiosInstance.post("/api/v1/hosts/auth/login", {
+        email, password
+      })
+      const data = response?.data;
+
+      if (!data.success) {
+        toast.error(response.message);
+        return;
+      }
+
+      toast.success(data.message);
+
+      setHostDetails(data.user);
+      navigate("/host/dashboard");
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to login.");
+    } finally {
+      setLoading(prev => ({ ...prev, hostLogin: false }));
+    }
+  }
+
+  const sendHostVerificationOTP = async () => {
+    setLoading(prev => ({ ...prev, sendHostVerificationOTP: true }));
+    try {
+      const response = await axiosInstance.post("/api/v1/hosts/otp", { id: hostDetails?.id });
+      const data = response?.data;
+
+      if (data.success) {
+        toast.success("OTP sent to your registered email id!");
+        return;
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to send otp.");
+    } finally {
+      setLoading(prev => ({ ...prev, sendHostVerificationOTP: false }));
+    }
+  }
+
+  const verifyHostKycDetails = async(details) => {
+    setLoading(prev => ({ ...prev, verifyHostKycDetails: true }));
+    try {
+      const response = await axiosInstance.post("/api/v1/hosts/verify", details);
+      const data = response?.data;
+
+      if (data.success) {
+        toast.success(data.message);
+        return;
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Failed to send otp.");
+    } finally {
+      setLoading(prev => ({ ...prev, verifyHostKycDetails: false }));
+    }
+  };
 
   const logout = async () => {
     try {
@@ -450,11 +507,11 @@ const AppContextProvider = ({ children }) => {
     darkmode,
     adminDetails,
     hostDetails,
-    hostVerification,
-    verifyHost,
-    removeHostVerification,
     adminLogin,
+    createHost,
     hostLogin,
+    sendHostVerificationOTP,
+    verifyHostKycDetails,
     toggleDarkmode,
     createUser,
     login,

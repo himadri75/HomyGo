@@ -160,7 +160,113 @@ const adminLogin = async (req, res) => {
 }
 
 const createHost = async (req, res) => {
-  const { } = req.body;
+  const { name, email, phone, password } = req.body;
+
+  if (!name || !email || !phone || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required"
+    });
+  }
+
+  try {
+    const [result] = await db.query(
+      'INSERT INTO hosts (name, email, password, phone) VALUES (?, ?, ?, ?)',
+      [name, email, password, phone]
+    );
+
+    // sendAccountCreatedMail(name, email, gender, dob, req)
+    //   .catch((err) => console.error("Email error:", err));
+
+    res.status(201).json({
+      success: true,
+      message: "Host account created.",
+      userId: result.insertId
+    })
+  } catch (error) {
+    if (error.code == "ER_DUP_ENTRY") {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists.",
+      })
+    }
+    res.status(500).json({
+      success: false,
+      message: "Internal server error.",
+    })
+  }
+}
+
+const verifyHostDetails = async (req, res) => {
+  
+}
+
+const hostLogin = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({
+      success: false,
+      message: "All fields are required."
+    });
+  }
+
+  try {
+    const [result] = await db.query(
+      'SELECT * FROM hosts WHERE email = ?',
+      [email]
+    );
+
+    if (result.length === 0) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password."
+      });
+    }
+
+    const user = result[0];
+
+    if (user.password !== password) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password."
+      });
+    }
+
+    // ✅ Remove password before sending
+    const { password: _, ...safeUser } = user;
+
+    // sendLoginSuccessMail(safeUser, req).catch(err => console.error("Mail Error:", err));
+
+    const token = jwt.sign({
+      id: user.id,
+      email: user.email
+    },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    // Store token in cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Login successful.",
+      user: safeUser
+    });
+
+  } catch (error) {
+    console.error("Login ERROR : ", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error."
+    });
+  }
 }
 
 const getUserDetails = async (req, res) => {
@@ -406,6 +512,8 @@ module.exports = {
   createUser,
   login,
   adminLogin,
+  createHost,
+  hostLogin,
   getUserDetails,
   logout,
   updateEmergencyEmailAndPhone,

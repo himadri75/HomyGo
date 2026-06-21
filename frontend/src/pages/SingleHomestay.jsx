@@ -11,6 +11,8 @@ const SingleHomestay = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [startDate, setStartDate] = useState("");
+  const [numRooms, setNumRooms] = useState(0);
+  const [numGuests, setNumGuests] = useState(0);
   const [endDate, setEndDate] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -524,6 +526,36 @@ const SingleHomestay = () => {
                     className="w-full p-2 border border-blue-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-blue-900 dark:text-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
                   />
 
+                </div>
+
+                {/* Rooms & Guests */}
+                <div className="grid grid-cols-2 gap-3">
+                  {/* No. of Rooms */}
+                  <div className="p-3 bg-blue-50 dark:bg-gray-800 border border-blue-200 dark:border-gray-700 rounded">
+                    <label className="text-xs text-blue-600 dark:text-gray-400 font-semibold uppercase block mb-1">
+                      No. of Rooms
+                    </label>
+                    <input
+                      type="number"
+                      min={1}
+                      value={numRooms}
+                      onChange={(e) => setNumRooms(Math.max(1, parseInt(e.target.value) || 1))}
+                      className="w-full p-2 border border-blue-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-blue-900 dark:text-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
+                    />
+                  </div>
+                  {/* No. of Guests */}
+                  <div className="p-3 bg-blue-50 dark:bg-gray-800 border border-blue-200 dark:border-gray-700 rounded">
+                    <label className="text-xs text-blue-600 dark:text-gray-400 font-semibold uppercase block mb-1">
+                      No. of Guests
+                    </label>
+                    <input
+                      type="number"
+                      min={1}
+                      value={numGuests}
+                      onChange={(e) => setNumGuests(Math.max(1, parseInt(e.target.value) || 1))}
+                      className="w-full p-2 border border-blue-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-blue-900 dark:text-gray-200 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:focus:ring-blue-500"
+                    />
+                  </div>
                 </div>
 
               </div>

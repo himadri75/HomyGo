@@ -30,9 +30,12 @@ import Host from "./pages/host/Host";
 import HostDashboard from "./pages/host/HostDashboard";
 import AddHomestay from "./pages/host/AddHomestay";
 import SingleCulturalFeed from "./pages/SingleCulturalFeed";
+import HostAuth from "./pages/host/HostAuth";
+import AdminNavbar from "./components/AdminNavbar";
+import Profile from "./pages/host/Profile";
 
 const App = () => {
-  const { fetchUserDetails, darkmode } = useContext(AppContext);
+  const { fetchUserDetails, darkmode, adminDetails, hostDetails } = useContext(AppContext);
 
   useEffect(() => {
     fetchUserDetails();
@@ -101,10 +104,9 @@ const App = () => {
     };
   }, []);
 
-
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      {(adminDetails || hostDetails) ? <AdminNavbar /> : <Navbar />}
       <ScrollToTop />
       <div className="grow">
         <Routes>
@@ -137,7 +139,10 @@ const App = () => {
             <Route index element={<HostDashboard />} />
             <Route path="dashboard" element={<HostDashboard />} />
             <Route path="add-homestay" element={<AddHomestay />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
+          <Route path="/host/auth/:state" element={<HostAuth />} />
+
         </Routes>
       </div>
 

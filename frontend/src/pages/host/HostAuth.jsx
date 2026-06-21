@@ -1,18 +1,30 @@
 import React, { useContext, useState } from 'react'
 import { AppContext } from '../../context/AppContext'
+import { useParams } from 'react-router-dom'
+import { useEffect } from 'react';
+import { FastForward } from 'lucide-react';
 
 const HostAuth = () => {
-  const { darkmode, hostLogin } = useContext(AppContext)
+  const { state } = useParams();
+  const { darkmode, hostLogin, createHost, loading } = useContext(AppContext)
 
   const [isLogin, setIsLogin] = useState(true)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    password: '',
-    aadhaar: '',
-    pan: ''
+    password: ''
   });
+
+  useEffect(() => { 
+    if (state === "login") {
+      setIsLogin(true);
+    } else if (state === "register") {
+      setIsLogin(false)
+    } else {
+      setIsLogin(true);
+    }
+  }, [state]);
 
   const handleChange = (e) => {
     setFormData({
@@ -22,16 +34,12 @@ const HostAuth = () => {
   }
 
   const handleSubmit = async(e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (isLogin) {
       await hostLogin(formData.email, formData.password);
-      console.log('Login Data:', {
-        email: formData.email,
-        password: formData.password
-      })
     } else {
-      console.log('Registration Data:', formData)
+      await createHost(formData);
     }
   }
 
@@ -163,58 +171,9 @@ const HostAuth = () => {
             />
           </div>
 
-          {!isLogin && (
-            <>
-              {/* Aadhaar */}
-              <div>
-                <label
-                  className={`block mb-2 text-sm font-medium ${
-                    darkmode ? 'text-gray-300' : 'text-gray-700'
-                  }`}
-                >
-                  Aadhaar Number
-                </label>
-                <input
-                  type="text"
-                  name="aadhaar"
-                  value={formData.aadhaar}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-4 py-3 rounded-lg border outline-none ${
-                    darkmode
-                      ? 'bg-gray-700 border-gray-600 text-white'
-                      : 'bg-white border-gray-300 text-gray-900'
-                  }`}
-                />
-              </div>
-
-              {/* PAN */}
-              <div>
-                <label
-                  className={`block mb-2 text-sm font-medium ${
-                    darkmode ? 'text-gray-300' : 'text-gray-700'
-                  }`}
-                >
-                  PAN Card Number
-                </label>
-                <input
-                  type="text"
-                  name="pan"
-                  value={formData.pan}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-4 py-3 rounded-lg border outline-none ${
-                    darkmode
-                      ? 'bg-gray-700 border-gray-600 text-white'
-                      : 'bg-white border-gray-300 text-gray-900'
-                  }`}
-                />
-              </div>
-            </>
-          )}
-
           <button
             type="submit"
+            disabled={isLogin ? loading.createHost : false}
             className="w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition"
           >
             {isLogin ? 'Login' : 'Register'}

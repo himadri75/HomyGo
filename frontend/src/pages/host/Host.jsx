@@ -1,14 +1,24 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 import { useContext } from "react";
 import Sidebar from "../../components/Sidebar";
 import HostAuth from "./HostAuth";
 
+const lockedRoutes = [
+  "/host/add-homestay",
+  "/host/dashboard",
+];
+
 function Host() {
   const { hostDetails, darkmode, loading } = useContext(AppContext);
+  const location = useLocation();
 
   if (!hostDetails) {
-    return <HostAuth/>;
+    return <Navigate to="/host/auth/login" replace />;
+  }
+
+  if (!hostDetails?.is_verified && lockedRoutes.includes(location.pathname)) {
+    return <Navigate to="/host/profile" replace />;
   }
 
   return (

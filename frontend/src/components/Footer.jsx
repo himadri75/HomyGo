@@ -18,7 +18,7 @@ const Footer = () => {
   const linkClass = "cursor-pointer text-slate-500 dark:text-slate-400 hover:text-blue-650 dark:hover:text-blue-400 transition-colors duration-205 text-sm py-1 inline-block";
 
   return (
-    <footer className="relative transition-colors duration-500 overflow-hidden bg-[var(--footer-sky-start)] text-slate-800 dark:text-slate-200 border-t border-slate-200/60 dark:border-slate-850/60">
+    <footer className="relative transition-colors duration-500 overflow-hidden bg-(--footer-sky-start) text-slate-800 dark:text-slate-200 border-t border-slate-200/60 dark:border-slate-850/60">
       
       {/* Top Content Grid & Columns */}
       <div className="max-w-7xl mx-auto px-2 pt-20 relative z-10">
@@ -83,7 +83,7 @@ const Footer = () => {
               Access Points
             </h3>
             <ul className="space-y-2.5">
-              <li><NavLink to="/host/dashboard" className={linkClass}>Host Portal</NavLink></li>
+              <li><NavLink to="/host" className={linkClass}>Host Portal</NavLink></li>
               <li><NavLink to="/admin/dashboard" className={linkClass}>Admin Panel</NavLink></li>
               <li><span className={linkClass}>Report Listing</span></li>
               <li><span className={linkClass}>Community Reviews</span></li>
@@ -138,12 +138,12 @@ const Footer = () => {
       </div>
 
       {/* Landscape SVG & Floating Copyright Pill Bar */}
-      <div className="relative w-full overflow-hidden block select-none bg-[var(--footer-sky-start)]">
+      <div className="relative w-full overflow-hidden block select-none bg-(--footer-sky-start)">
         <svg 
           viewBox="0 0 1440 420" 
           width="100%" 
           height="auto" 
-          className="w-full h-auto min-h-[240px] md:min-h-[320px] lg:min-h-[420px] block"
+          className="w-full h-auto min-h-60 md:min-h-80 lg:min-h-105 block"
           preserveAspectRatio="none"
         >
           <defs>
@@ -200,7 +200,7 @@ const Footer = () => {
             fontWeight="900" 
             fontFamily="system-ui, -apple-system, sans-serif" 
             fill="currentColor" 
-            className="text-slate-900/[0.04] dark:text-white/[0.05] tracking-wider uppercase font-black"
+            className="text-slate-900/4 dark:text-white/5 tracking-wider uppercase font-black"
           >
             HomyGo
           </text>
@@ -240,25 +240,25 @@ const Footer = () => {
           />
 
           {/* Forest Trees: Back Left Slope */}
-          <use href="#pinetree" x="40" y="295" transform="scale(0.85)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#roundtree" x="80" y="310" transform="scale(1.05)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#pinetree" x="120" y="305" transform="scale(0.75)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#roundtree" x="160" y="320" transform="scale(1.15)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#pinetree" x="220" y="315" transform="scale(0.95)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#roundtree" x="280" y="330" transform="scale(1.05)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#pinetree" x="350" y="325" transform="scale(0.8)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#roundtree" x="420" y="340" transform="scale(0.95)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#pinetree" x="480" y="335" transform="scale(0.7)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
+          <use href="#pinetree" x="40" y="295" transform="scale(0.85)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#roundtree" x="80" y="310" transform="scale(1.05)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#pinetree" x="120" y="305" transform="scale(0.75)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#roundtree" x="160" y="320" transform="scale(1.15)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#pinetree" x="220" y="315" transform="scale(0.95)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#roundtree" x="280" y="330" transform="scale(1.05)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#pinetree" x="350" y="325" transform="scale(0.8)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#roundtree" x="420" y="340" transform="scale(0.95)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#pinetree" x="480" y="335" transform="scale(0.7)" className="text-(--footer-forest-front)" fill="currentColor" />
 
           {/* Forest Trees: Back Right Slope */}
-          <use href="#pinetree" x="980" y="355" transform="scale(0.75)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#roundtree" x="1040" y="345" transform="scale(1.05)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#pinetree" x="1100" y="335" transform="scale(0.85)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#roundtree" x="1160" y="325" transform="scale(1.15)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#pinetree" x="1220" y="315" transform="scale(0.95)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#roundtree" x="1280" y="310" transform="scale(1.05)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#pinetree" x="1340" y="305" transform="scale(0.8)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
-          <use href="#roundtree" x="1390" y="295" transform="scale(0.95)" className="text-[var(--footer-forest-front)]" fill="currentColor" />
+          <use href="#pinetree" x="980" y="355" transform="scale(0.75)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#roundtree" x="1040" y="345" transform="scale(1.05)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#pinetree" x="1100" y="335" transform="scale(0.85)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#roundtree" x="1160" y="325" transform="scale(1.15)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#pinetree" x="1220" y="315" transform="scale(0.95)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#roundtree" x="1280" y="310" transform="scale(1.05)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#pinetree" x="1340" y="305" transform="scale(0.8)" className="text-(--footer-forest-front)" fill="currentColor" />
+          <use href="#roundtree" x="1390" y="295" transform="scale(0.95)" className="text-(--footer-forest-front)" fill="currentColor" />
 
           {/* Left Foreground Hill */}
           <path 
