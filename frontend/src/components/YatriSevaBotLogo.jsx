@@ -44,7 +44,7 @@ const BotEye = ({ side, animated, eyeClass }) => {
     <span className={`absolute ${position} top-[31%] overflow-hidden rounded-full ${eyeClass}`}>
       {/* glowing pupil */}
       <span className={`${eyeBaseClasses} h-full w-full`} />
-      {/* eyelid — driven entirely by CSS animation in index.css (.bot-lid-animated) */}
+      {/* eyelid — opacity animated by CSS keyframe bot-blink in index.css */}
       <span
         className="bot-lid-animated"
         style={{
@@ -52,6 +52,7 @@ const BotEye = ({ side, animated, eyeClass }) => {
           inset: 0,
           borderRadius: "9999px",
           backgroundColor: "#0b1220",
+          opacity: 0,
           pointerEvents: "none",
         }}
       />
