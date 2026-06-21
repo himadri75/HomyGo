@@ -416,21 +416,21 @@ a:hover, button:hover, .cursor-pointer:hover, [role="button"]:hover {
 }
 
 /*
-  1-second blink cycle:
-  0   – 750ms : eye open
-  750 – 820ms : lid closes (70ms)
-  820 – 900ms : lid held closed (80ms)
-  900 – 970ms : lid opens (70ms)
-  970 – 1000ms: eye open briefly before next cycle
+  Blink every ~1s:
+  0   – 720ms : eye open (60%)
+  720 – 800ms : lid closes (80ms)
+  800 – 920ms : lid held closed (120ms)
+  920 – 1000ms: lid opens (80ms)
+  1000– 1200ms: eye open briefly
 */
 @keyframes bot-blink {
-  0%, 75%  { opacity: 0; }
-  82%      { opacity: 1; }
-  90%      { opacity: 1; }
-  97%      { opacity: 0; }
+  0%, 60%  { opacity: 0; }
+  67%      { opacity: 1; }
+  77%      { opacity: 1; }
+  83%      { opacity: 0; }
   100%     { opacity: 0; }
 }
 
 .bot-lid-animated {
-  animation: bot-blink 1s linear infinite;
+  animation: bot-blink 1.2s linear infinite;
 }
