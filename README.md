@@ -69,12 +69,12 @@
 - **User Verification** - Secure authentication with Google OAuth
 - **Notifications** - Stay updated with real-time alerts
 
-### Admin & Host Management Panel
+### Sub-Admin (Host) Management Panel
 
 -   **Host Dashboard** - Dedicated dashboard for hosts to manage their homestay business
 -   **Homestay CRUD Operations** - Add, edit, update, and delete homestay listings with ease
 -   **Booking Management** - Monitor reservations, guest details, and booking status
--   **Payment Tracking** - View online payments, transaction history, and booking revenue
+-   **Content Moderation** - Manage cultural feed posts, reviews, and platform content
 -   **Host Analytics** - Track occupancy rates, earnings, and booking performance
     
 ### Administration Panel
@@ -82,7 +82,6 @@
 -   **System Dashboard** - Centralized overview of users, bookings, homestays, and platform activity 
 -   **Homestay Verification** - Review, approve, or reject homestay listings before publication  
 -   **User Management** - Monitor travelers and hosts, manage accounts, and handle reports  
--   **Content Moderation** - Manage cultural feed posts, reviews, and platform content
 -   **Platform Settings** - Configure system preferences, policies, and application settings
 -   **Reports & Insights** - Access platform-wide analytics, booking trends, and revenue statistics
 
