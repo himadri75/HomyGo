@@ -197,7 +197,7 @@ const AppContextProvider = ({ children }) => {
     }
   }
 
-  const verifyHostKycDetails = async(details) => {
+  const verifyHostKycDetails = async (details) => {
     setLoading(prev => ({ ...prev, verifyHostKycDetails: true }));
     try {
       const response = await axiosInstance.post("/api/v1/hosts/verify", details);
@@ -215,6 +215,16 @@ const AppContextProvider = ({ children }) => {
   };
 
   const logout = async () => {
+    if (adminDetails) {
+      setAdminDetails(null);
+      return;
+    }
+
+    if (hostDetails) {
+      setHostDetails(null);
+      return;
+    }
+
     try {
       const res = await axiosInstance.post("/api/v1/users/logout");
       if (res.data.success) {

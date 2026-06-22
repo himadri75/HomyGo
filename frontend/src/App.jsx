@@ -53,55 +53,35 @@ const App = () => {
 
   // ── Server status check ──
   useEffect(() => {
-    let retryTimer = null;
-
-    const checkServer = async (isRetry = false) => {
+    const checkServer = async () => {
       try {
-        // Plain fetch (no credentials) — /health is public, no preflight needed
         const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/health`, {
           method: "GET",
           mode: "cors",
         });
-        if (res.ok || res.status === 304) {
-          toast.success("Server connected ✅", {
-            id: "server-status",
-            duration: 3000,
-            style: {
-              background: "#f0fdf4",
-              color: "#166534",
-              border: "1px solid #bbf7d0",
-              fontWeight: 600,
-              fontSize: "13px",
-            },
-            iconTheme: { primary: "#16a34a", secondary: "#f0fdf4" },
-          });
-        } else {
+
+        if (!res.ok) {
           throw new Error(`HTTP ${res.status}`);
         }
-      } catch {
-        if (!isRetry) {
-          retryTimer = setTimeout(() => checkServer(true), 4000);
-        } else {
-          toast.error("Server disconnected ❌", {
-            id: "server-status",
-            duration: Infinity,
-            style: {
-              background: "#fef2f2",
-              color: "#991b1b",
-              border: "1px solid #fecaca",
-              fontWeight: 600,
-              fontSize: "13px",
-            },
+
+        const data = await res.json();
+
+        if (data.status === "UP") {
+          toast.success("Server connected.", {
+            duration: 3000,
           });
+        } else {
+          throw new Error("Server not healthy");
         }
+
+      } catch (error) {
+        toast.error("Server disconnected.", {
+          duration: 3000,
+        });
       }
     };
 
-    const timer = setTimeout(() => checkServer(false), 3000);
-    return () => {
-      clearTimeout(timer);
-      if (retryTimer) clearTimeout(retryTimer);
-    };
+    checkServer();
   }, []);
 
   return (

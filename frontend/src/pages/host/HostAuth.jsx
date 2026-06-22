@@ -16,7 +16,12 @@ const HostAuth = () => {
     password: ''
   });
 
-  useEffect(() => { 
+  const storeHostcredentials = () => {
+    localStorage.setItem("hostEmail", formData.email);
+    localStorage.setItem("hostPassword", formData.password);
+  }
+
+  useEffect(() => {
     if (state === "login") {
       setIsLogin(true);
     } else if (state === "register") {
@@ -26,6 +31,18 @@ const HostAuth = () => {
     }
   }, [state]);
 
+  useEffect(() => {
+    const hostEmail = localStorage.getItem("hostEmail");
+    const hostPassword = localStorage.getItem("hostPassword");
+
+    if (hostEmail && hostPassword) {
+      setFormData({
+        email: hostEmail,
+        password: hostPassword
+      });
+    }
+  }, [])
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -33,11 +50,12 @@ const HostAuth = () => {
     })
   }
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (isLogin) {
       await hostLogin(formData.email, formData.password);
+      storeHostcredentials();
     } else {
       await createHost(formData);
     }
@@ -45,29 +63,25 @@ const HostAuth = () => {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center px-4 py-10 ${
-        darkmode ? 'bg-gray-900' : 'bg-gray-100'
-      }`}
+      className={`min-h-screen flex items-center justify-center px-4 py-10 ${darkmode ? 'bg-gray-900' : 'bg-gray-100'
+        }`}
     >
       <div
-        className={`w-full max-w-md rounded-2xl shadow-xl p-8 ${
-          darkmode
-            ? 'bg-gray-800 border border-gray-700'
-            : 'bg-white border border-gray-200'
-        }`}
+        className={`w-full max-w-md rounded-2xl shadow-xl p-8 ${darkmode
+          ? 'bg-gray-800 border border-gray-700'
+          : 'bg-white border border-gray-200'
+          }`}
       >
         <h1
-          className={`text-3xl font-bold text-center mb-2 ${
-            darkmode ? 'text-white' : 'text-gray-900'
-          }`}
+          className={`text-3xl font-bold text-center mb-2 ${darkmode ? 'text-white' : 'text-gray-900'
+            }`}
         >
           {isLogin ? 'Host Login' : 'Host Registration'}
         </h1>
 
         <p
-          className={`text-center mb-8 ${
-            darkmode ? 'text-gray-400' : 'text-gray-600'
-          }`}
+          className={`text-center mb-8 ${darkmode ? 'text-gray-400' : 'text-gray-600'
+            }`}
         >
           {isLogin
             ? 'Login to manage your homestays'
@@ -80,9 +94,8 @@ const HostAuth = () => {
               {/* Name */}
               <div>
                 <label
-                  className={`block mb-2 text-sm font-medium ${
-                    darkmode ? 'text-gray-300' : 'text-gray-700'
-                  }`}
+                  className={`block mb-2 text-sm font-medium ${darkmode ? 'text-gray-300' : 'text-gray-700'
+                    }`}
                 >
                   Full Name
                 </label>
@@ -92,20 +105,18 @@ const HostAuth = () => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className={`w-full px-4 py-3 rounded-lg border outline-none ${
-                    darkmode
-                      ? 'bg-gray-700 border-gray-600 text-white'
-                      : 'bg-white border-gray-300 text-gray-900'
-                  }`}
+                  className={`w-full px-4 py-3 rounded-lg border outline-none ${darkmode
+                    ? 'bg-gray-700 border-gray-600 text-white'
+                    : 'bg-white border-gray-300 text-gray-900'
+                    }`}
                 />
               </div>
 
               {/* Phone */}
               <div>
                 <label
-                  className={`block mb-2 text-sm font-medium ${
-                    darkmode ? 'text-gray-300' : 'text-gray-700'
-                  }`}
+                  className={`block mb-2 text-sm font-medium ${darkmode ? 'text-gray-300' : 'text-gray-700'
+                    }`}
                 >
                   Phone Number
                 </label>
@@ -115,11 +126,10 @@ const HostAuth = () => {
                   value={formData.phone}
                   onChange={handleChange}
                   required
-                  className={`w-full px-4 py-3 rounded-lg border outline-none ${
-                    darkmode
-                      ? 'bg-gray-700 border-gray-600 text-white'
-                      : 'bg-white border-gray-300 text-gray-900'
-                  }`}
+                  className={`w-full px-4 py-3 rounded-lg border outline-none ${darkmode
+                    ? 'bg-gray-700 border-gray-600 text-white'
+                    : 'bg-white border-gray-300 text-gray-900'
+                    }`}
                 />
               </div>
             </>
@@ -128,9 +138,8 @@ const HostAuth = () => {
           {/* Email */}
           <div>
             <label
-              className={`block mb-2 text-sm font-medium ${
-                darkmode ? 'text-gray-300' : 'text-gray-700'
-              }`}
+              className={`block mb-2 text-sm font-medium ${darkmode ? 'text-gray-300' : 'text-gray-700'
+                }`}
             >
               Email Address
             </label>
@@ -140,20 +149,18 @@ const HostAuth = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className={`w-full px-4 py-3 rounded-lg border outline-none ${
-                darkmode
-                  ? 'bg-gray-700 border-gray-600 text-white'
-                  : 'bg-white border-gray-300 text-gray-900'
-              }`}
+              className={`w-full px-4 py-3 rounded-lg border outline-none ${darkmode
+                ? 'bg-gray-700 border-gray-600 text-white'
+                : 'bg-white border-gray-300 text-gray-900'
+                }`}
             />
           </div>
 
           {/* Password */}
           <div>
             <label
-              className={`block mb-2 text-sm font-medium ${
-                darkmode ? 'text-gray-300' : 'text-gray-700'
-              }`}
+              className={`block mb-2 text-sm font-medium ${darkmode ? 'text-gray-300' : 'text-gray-700'
+                }`}
             >
               Password
             </label>
@@ -163,11 +170,10 @@ const HostAuth = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              className={`w-full px-4 py-3 rounded-lg border outline-none ${
-                darkmode
-                  ? 'bg-gray-700 border-gray-600 text-white'
-                  : 'bg-white border-gray-300 text-gray-900'
-              }`}
+              className={`w-full px-4 py-3 rounded-lg border outline-none ${darkmode
+                ? 'bg-gray-700 border-gray-600 text-white'
+                : 'bg-white border-gray-300 text-gray-900'
+                }`}
             />
           </div>
 
@@ -183,9 +189,8 @@ const HostAuth = () => {
         <div className="mt-6 text-center">
           {isLogin ? (
             <p
-              className={`${
-                darkmode ? 'text-gray-400' : 'text-gray-600'
-              }`}
+              className={`${darkmode ? 'text-gray-400' : 'text-gray-600'
+                }`}
             >
               Don't have an account?{' '}
               <button
@@ -197,9 +202,8 @@ const HostAuth = () => {
             </p>
           ) : (
             <p
-              className={`${
-                darkmode ? 'text-gray-400' : 'text-gray-600'
-              }`}
+              className={`${darkmode ? 'text-gray-400' : 'text-gray-600'
+                }`}
             >
               Already have an account?{' '}
               <button

@@ -20,7 +20,7 @@ app.use(morgan("dev"));
 app.set("trust proxy", 1);
 
 // CORS
-const allowedOrigins = ["http://localhost:5173", "https://homygo.apps24.tech"];
+const allowedOrigins = ["http://localhost:5173", "https://homygo.apps24.tech", "https://api3.apps24.tech", "https://deliverer-premiere-gander.ngrok-free.dev"];
 app.use(
   cors({
     origin: allowedOrigins,

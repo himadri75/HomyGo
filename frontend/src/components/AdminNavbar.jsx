@@ -1,18 +1,17 @@
 import { useContext } from "react";
 import { LogOut } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FaSun, FaMoon } from "react-icons/fa";
 import { AppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 const AdminNavbar = () => {
-  const {
-    darkmode,
-    toggleDarkmode,
-  } = useContext(AppContext);
+  const { darkmode, toggleDarkmode, logout } = useContext(AppContext);
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    // Clear auth data
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
     toast.success("Logout successfull.");
   };
 

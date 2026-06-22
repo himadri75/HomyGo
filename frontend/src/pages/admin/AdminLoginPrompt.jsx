@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ShieldAlert, Lock, User } from "lucide-react";
 import { AppContext } from "../../context/AppContext";
 
@@ -8,11 +8,27 @@ function AdminLoginPrompt({ role, login, loading }) {
   const [loginId, setAdminId] = useState("");
   const [password, setPassword] = useState("");
 
+  const storeAdmincredentials = () => {
+    localStorage.setItem("adminId", loginId);
+    localStorage.setItem("adminPassword", password);
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     await login(loginId, password);
+    storeAdmincredentials();
   };
+
+  useEffect(() => {
+    const adminId = localStorage.getItem("adminId");
+    const adminPassword = localStorage.getItem("adminPassword");
+
+    if (adminId && adminPassword) {
+      setAdminId(adminId);
+      setPassword(adminPassword);
+    }
+  }, [])
 
   return (
     <section
